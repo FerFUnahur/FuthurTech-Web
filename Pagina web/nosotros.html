@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiénes somos - Futhur Tech</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .value-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: var(--transition);
+    }
+    .value-card:hover {
+      transform: translateY(-4px);
+    }
+    .value-card .icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+    }
+    .value-card h4 {
+      margin-bottom: 10px;
+      color: var(--green);
+    }
+    .value-card p {
+      color: var(--gray);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 28px;
+    }
+    .team-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 30px 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: var(--transition);
+    }
+    .team-card:hover {
+      transform: translateY(-4px);
+    }
+    .team-card .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin: 0 auto 16px;
+      border: 3px solid var(--green);
+    }
+    .team-card h4 {
+      margin-bottom: 4px;
+    }
+    .team-card .role {
+      color: var(--green);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .team-card p {
+      color: var(--gray);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 24px;
+    }
+    .diff-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 20px;
+    }
+    .diff-item .di-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(96,158,47,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .diff-item h4 {
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+    .diff-item p {
+      color: var(--gray);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    @media (max-width: 768px) {
+      .values-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .diff-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .team-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Futhur <span>Tech</span></a>
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="hardware.html">Hardware</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="login.html">Ingresar</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="page-header">
+    <div class="container">
+      <h1>Quiénes somos</h1>
+      <p>Conocé nuestra historia, misión y el equipo detrás de Futhur Tech.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Nuestra historia</h2>
+      <p class="section-subtitle">Cómo nació Futhur Tech</p>
+      <div style="max-width: 750px; margin: 0 auto; text-align: center;">
+        <p style="color: var(--gray); line-height: 1.8; font-size: 1.05rem;">
+          Futhur Tech nace en la <strong>Universidad Nacional de Hurlingham (UNAHUR)</strong> como un proyecto
+          educativo para acercar la robótica y la programación a estudiantes de todos los niveles.
+          Detectamos que el acceso a materiales y formación de calidad era limitado, y decidimos
+          crear un modelo que combinara hardware accesible, contenido pedagógico estructurado y
+          acompañamiento real.
+        </p>
+        <p style="color: var(--gray); line-height: 1.8; font-size: 1.05rem; margin-top: 16px;">
+          Hoy ofrecemos tres niveles de aprendizaje —hardware, curso autoasistido y experiencia
+          completa— para que cada persona pueda elegir el camino que mejor se adapte a sus
+          objetivos. Creemos que la mejor forma de aprender es <strong>haciendo</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--bg-light);">
+    <div class="container">
+      <h2 class="section-title">Misión, visión y valores</h2>
+      <p class="section-subtitle">Lo que nos guía cada día</p>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="icon">🎯</div>
+          <h4>Misión</h4>
+          <p>Democratizar el acceso a la educación en robótica y programación, ofreciendo herramientas prácticas y contenido de calidad para todos los niveles.</p>
+        </div>
+        <div class="value-card">
+          <div class="icon">🔭</div>
+          <h4>Visión</h4>
+          <p>Ser referentes en formación tecnológica accesible en Argentina, formando una comunidad de creadores e innovadores con impacto real.</p>
+        </div>
+        <div class="value-card">
+          <div class="icon">💡</div>
+          <h4>Valores</h4>
+          <p>Innovación constante, compromiso con la educación pública, trabajo en comunidad y búsqueda permanente de calidad educativa.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Nuestro equipo</h2>
+      <p class="section-subtitle">Las personas que hacen posible Futhur Tech</p>
+      <div class="team-grid">
+
+        <div class="team-card">
+          <div class="avatar">👨‍🏫</div>
+          <h4>Juan Pérez</h4>
+          <div class="role">Fundador &amp; CEO</div>
+          <p>Docente e investigador en UNAHUR. Especialista en tecnología educativa y robótica pedagógica.</p>
+        </div>
+
+        <div class="team-card">
+          <div class="avatar">👩‍💻</div>
+          <h4>María López</h4>
+          <div class="role">Desarrollo de contenidos</div>
+          <p>Ingeniera en sistemas. Diseña los cursos y materiales didácticos del portal educativo.</p>
+        </div>
+
+        <div class="team-card">
+          <div class="avatar">👨‍🔧</div>
+          <h4>Carlos García</h4>
+          <div class="role">Especialista en hardware</div>
+          <p>Técnico electrónico. Selecciona y prueba cada componente de los kits de robótica.</p>
+        </div>
+
+        <div class="team-card">
+          <div class="avatar">👩‍🎓</div>
+          <h4>Ana Martínez</h4>
+          <div class="role">Tutora y comunidad</div>
+          <p>Estudiante avanzada de ingeniería. Coordina el foro de consultas y el acompañamiento a estudiantes.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--white);">
+    <div class="container">
+      <h2 class="section-title">Por qué Futhur Tech</h2>
+      <p class="section-subtitle">Diferenciadores que nos hacen únicos</p>
+      <div class="diff-grid" style="max-width: 850px; margin: 0 auto;">
+        <div class="diff-item">
+          <div class="di-icon">🎓</div>
+          <div>
+            <h4>Respaldo UNAHUR</h4>
+            <p>Nacimos en la Universidad Nacional de Hurlingham con el apoyo de su equipo docente y de investigación.</p>
+          </div>
+        </div>
+        <div class="diff-item">
+          <div class="di-icon">🛠️</div>
+          <div>
+            <h4>Metodología práctica</h4>
+            <p>Aprendé haciendo: cada concepto teórico se aplica inmediatamente en un proyecto real.</p>
+          </div>
+        </div>
+        <div class="diff-item">
+          <div class="di-icon">✅</div>
+          <div>
+            <h4>Certificación verificable</h4>
+            <p>Todos los certificados tienen código único de verificación digital con validez educativa.</p>
+          </div>
+        </div>
+        <div class="diff-item">
+          <div class="di-icon">🤝</div>
+          <div>
+            <h4>Comunidad activa</h4>
+            <p>Foro de consultas, proyectos colaborativos y red de estudiantes en todo el país.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Sumate a la comunidad</h2>
+      <p>Descubrí todo lo que Futhur Tech tiene para ofrecerte.</p>
+      <a href="contacto.html" class="btn">Contactanos</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div>
+        <a href="index.html" class="logo">Futhur <span style="color: var(--green);">Tech</span></a>
+        <p>Robótica educativa para todos. Aprendé haciendo, construí tu futuro.</p>
+      </div>
+      <div>
+        <h4>Nosotros</h4>
+        <a href="nosotros.html">Quiénes somos</a><br>
+        <a href="faq.html">Preguntas frecuentes</a><br>
+        <a href="contacto.html">Contacto</a><br>
+        <a href="login.html">Ingresar</a>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <p>contacto@futhurtech.com</p>
+        <p>+54 11 5555-1234</p>
+        <p>Hurlingham, Buenos Aires</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Futhur Tech. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

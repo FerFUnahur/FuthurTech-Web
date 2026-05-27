@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto - Futhur Tech</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Futhur <span>Tech</span></a>
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="hardware.html">Hardware</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="login.html">Ingresar</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="page-header">
+    <div class="container">
+      <h1>Contacto</h1>
+      <p>Estamos para ayudarte. Escribinos y te respondemos a la brevedad.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-section">
+
+        <div class="contact-form">
+          <h3 style="margin-bottom: 24px;">Enviar mensaje</h3>
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="nombre">Nombre completo *</label>
+              <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre">
+            </div>
+            <div class="form-group">
+              <label for="email">Correo electrónico *</label>
+              <input type="email" id="email" name="email" required placeholder="tucorreo@ejemplo.com">
+            </div>
+            <div class="form-group">
+              <label for="interes">Interés *</label>
+              <select id="interes" name="interes" required>
+                <option value="">Seleccioná una opción</option>
+                <option value="hardware">Kits de hardware</option>
+                <option value="curso">Cursos</option>
+                <option value="experiencia">Experiencia completa</option>
+                <option value="consulta">Consulta general</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="mensaje">Mensaje *</label>
+              <textarea id="mensaje" name="mensaje" required placeholder="Contanos en qué podemos ayudarte..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div class="contact-info">
+          <div class="contact-info-item">
+            <div class="ci-icon">📧</div>
+            <div>
+              <h4>Email</h4>
+              <p>contacto@futhurtech.com</p>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ci-icon">📞</div>
+            <div>
+              <h4>Teléfono</h4>
+              <p>+54 11 5555-1234</p>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ci-icon">📍</div>
+            <div>
+              <h4>Ubicación</h4>
+              <p>Tte. Manuel Origone 151, Hurlingham, Buenos Aires</p>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ci-icon">🕐</div>
+            <div>
+              <h4>Horarios</h4>
+              <p>Lun a Vie 10:00 - 18:00 | Sáb 10:00 - 13:00</p>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ci-icon">💬</div>
+            <div>
+              <h4>WhatsApp</h4>
+              <p>+54 11 5555-1234</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div>
+        <a href="index.html" class="logo">Futhur <span style="color: var(--green);">Tech</span></a>
+        <p>Robótica educativa para todos. Aprendé haciendo, construí tu futuro.</p>
+      </div>
+      <div>
+        <h4>Nosotros</h4>
+        <a href="nosotros.html">Quiénes somos</a><br>
+        <a href="faq.html">Preguntas frecuentes</a><br>
+        <a href="contacto.html">Contacto</a><br>
+        <a href="login.html">Ingresar</a>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <p>contacto@futhurtech.com</p>
+        <p>+54 11 5555-1234</p>
+        <p>Hurlingham, Buenos Aires</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Futhur Tech. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi cuenta - Futhur Tech</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Futhur <span>Tech</span></a>
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="hardware.html">Hardware</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="dashboard-section">
+    <div class="container">
+      <div class="dashboard-header">
+        <div>
+          <h1 id="dashboardWelcome">¡Bienvenido!</h1>
+          <p id="dashboardEmail" style="color: var(--gray);">cargando...</p>
+        </div>
+        <button class="btn btn-outline" id="logoutBtn" style="border-color: var(--red); color: var(--red);">Cerrar sesión</button>
+      </div>
+
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <div class="stat-icon">🔧</div>
+          <div>
+            <h3>15</h3>
+            <p>Kits disponibles</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div>
+            <h3>1,200</h3>
+            <p>Estudiantes</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📚</div>
+          <div>
+            <h3>8</h3>
+            <p>Módulos</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏆</div>
+          <div>
+            <h3>100</h3>
+            <p>Certificados</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 style="margin-top: 40px; margin-bottom: 20px;">Acceso rápido</h2>
+      <div class="dashboard-links">
+        <a href="hardware.html" class="dash-link">
+          <span class="dash-link-icon">🔧</span>
+          <div>
+            <h4>Gestionar kits</h4>
+            <p>Ver y administrar los kits de hardware</p>
+          </div>
+          <span class="dash-link-arrow">→</span>
+        </a>
+        <a href="cursos.html" class="dash-link">
+          <span class="dash-link-icon">📚</span>
+          <div>
+            <h4>Ver cursos</h4>
+            <p>Accedé al contenido pedagógico</p>
+          </div>
+          <span class="dash-link-arrow">→</span>
+        </a>
+        <a href="contacto.html" class="dash-link">
+          <span class="dash-link-icon">✉️</span>
+          <div>
+            <h4>Soporte</h4>
+            <p>Contactanos ante cualquier duda</p>
+          </div>
+          <span class="dash-link-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div>
+        <a href="index.html" class="logo">Futhur <span style="color: var(--green);">Tech</span></a>
+        <p>Robótica educativa para todos. Aprendé haciendo, construí tu futuro.</p>
+      </div>
+      <div>
+        <h4>Nosotros</h4>
+        <a href="nosotros.html">Quiénes somos</a><br>
+        <a href="faq.html">Preguntas frecuentes</a><br>
+        <a href="contacto.html">Contacto</a><br>
+        <a href="login.html">Ingresar</a>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <p>contacto@futhurtech.com</p>
+        <p>+54 11 5555-1234</p>
+        <p>Hurlingham, Buenos Aires</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Futhur Tech. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

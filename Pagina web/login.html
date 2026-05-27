@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión - Futhur Tech</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Futhur <span>Tech</span></a>
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="hardware.html">Hardware</a></li>
+        <li><a href="cursos.html">Cursos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="login-section">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-icon">🔐</div>
+        <h2>Iniciar sesión</h2>
+        <p>Ingresá tus credenciales para acceder</p>
+      </div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail">Correo electrónico</label>
+          <input type="email" id="loginEmail" name="email" required placeholder="tucorreo@ejemplo.com" value="admin@futhurtech.com">
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Contraseña</label>
+          <div class="password-wrapper">
+            <input type="password" id="loginPassword" name="password" required placeholder="••••••••" value="admin123">
+            <button type="button" class="toggle-password" id="togglePassword" tabindex="-1">👁️</button>
+          </div>
+        </div>
+        <div class="form-group" id="loginError" style="display: none;">
+          <p style="color: var(--red); font-size: 0.9rem;">✗ Credenciales inválidas. Intentá de nuevo.</p>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Iniciar sesión</button>
+      </form>
+      <div class="login-footer">
+        <p>¿Olvidaste tu contraseña? <a href="contacto.html">Contactanos</a></p>
+        <p style="margin-top: 8px; font-size: 0.8rem; color: var(--gray);">Demo: admin@futhurtech.com / admin123</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div>
+        <a href="index.html" class="logo">Futhur <span style="color: var(--green);">Tech</span></a>
+        <p>Robótica educativa para todos. Aprendé haciendo, construí tu futuro.</p>
+      </div>
+      <div>
+        <h4>Nosotros</h4>
+        <a href="nosotros.html">Quiénes somos</a><br>
+        <a href="faq.html">Preguntas frecuentes</a><br>
+        <a href="contacto.html">Contacto</a><br>
+        <a href="login.html">Ingresar</a>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <p>contacto@futhurtech.com</p>
+        <p>+54 11 5555-1234</p>
+        <p>Hurlingham, Buenos Aires</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Futhur Tech. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
