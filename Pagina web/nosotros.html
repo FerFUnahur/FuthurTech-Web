@@ -120,9 +120,10 @@
 </head>
 <body>
 
+  <!-- Navegación principal: enlaces de la cabecera y menú móvil -->
   <nav class="navbar">
     <div class="container">
-      <a href="index.html" class="logo">Futhur <span>Tech</span></a>
+      <a href="index.html" class="logo">Futhur<span>Tech</span></a>
       <div class="hamburger">
         <span></span><span></span><span></span>
       </div>
@@ -130,13 +131,26 @@
         <li><a href="index.html">Inicio</a></li>
         <li><a href="hardware.html">Hardware</a></li>
         <li><a href="cursos.html">Cursos</a></li>
-        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="index.html#footer-soporte">Soporte</a></li>
         <li><a href="contacto.html">Contacto</a></li>
-        <li><a href="login.html">Ingresar</a></li>
+        <li class="nav-icon"><a href="login.html" title="Iniciar sesión">
+            <svg class="nav-svg icon-login" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
+              <path d="M6 20a6 6 0 0 1 12 0"></path>
+            </svg>
+          </a></li>
+        <li class="nav-icon"><a href="carrito.html" title="Carrito">
+            <svg class="nav-svg icon-cart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M3 3h2l.4 2M7 13h10l4-8H5.4"></path>
+              <circle cx="10" cy="20" r="1"></circle>
+              <circle cx="18" cy="20" r="1"></circle>
+            </svg>
+          </a></li>
       </ul>
     </div>
   </nav>
 
+  <!-- Encabezado de página: historia y valores de la empresa -->
   <section class="page-header">
     <div class="container">
       <h1>Quiénes somos</h1>
@@ -267,7 +281,7 @@
   <section class="cta-section">
     <div class="container">
       <h2>Sumate a la comunidad</h2>
-      <p>Descubrí todo lo que Futhur Tech tiene para ofrecerte.</p>
+      <p>Descubrí todo lo que FuthurTech tiene para ofrecerte.</p>
       <a href="contacto.html" class="btn">Contactanos</a>
     </div>
   </section>
@@ -275,7 +289,7 @@
   <footer class="footer">
     <div class="container">
       <div>
-        <a href="index.html" class="logo">Futhur <span style="color: var(--green);">Tech</span></a>
+        <a href="index.html" class="logo">Futhur<span style="color: var(--green);">Tech</span></a>
         <p>Robótica educativa para todos. Aprendé haciendo, construí tu futuro.</p>
       </div>
       <div>
@@ -294,7 +308,7 @@
     </div>
     <div class="container">
       <div class="footer-bottom">
-        <p>&copy; 2026 Futhur Tech. Todos los derechos reservados.</p>
+        <p>&copy; 2026 FuthurTech. Todos los derechos reservados.</p>
       </div>
     </div>
   </footer>
@@ -302,3 +316,4 @@
   <script src="js/main.js"></script>
 </body>
 </html>
+
