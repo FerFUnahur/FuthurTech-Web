@@ -1,14 +1,40 @@
-// Seed default user
+// Inicializa un usuario predeterminado en localStorage
+// y corrige datos antiguos si detecta valores obsoletos.
 (function seedDefaultUser() {
   if (!localStorage.getItem('ft_users')) {
-    const users = [{ email: 'admin@futhurtech.com', password: 'admin123', name: 'Admin' }];
+    const users = [{
+      email: 'admin@futhurtech.com',
+      password: 'admin123',
+      name: 'Admin',
+      phone: '',
+      location: '',
+      birthdate: '',
+      course: 'Robótica Inicial',
+      bio: ''
+    }];
+    localStorage.setItem('ft_users', JSON.stringify(users));
+  }
+
+  const users = JSON.parse(localStorage.getItem('ft_users') || '[]');
+  let changed = false;
+  users.forEach(user => {
+    if (user.phone === '+54 11 5555-1234') {
+      user.phone = '';
+      changed = true;
+    }
+    if (user.location === 'Hurlingham, Buenos Aires') {
+      user.location = '';
+      changed = true;
+    }
+  });
+  if (changed) {
     localStorage.setItem('ft_users', JSON.stringify(users));
   }
 })();
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Hamburger menu toggle
+  // Alterna el menú hamburguesa en dispositivos móviles
   const hamburger = document.querySelector('.hamburger');
   const navLinks = document.querySelector('.nav-links');
 
@@ -19,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Close menu on link click (mobile)
+  // Cierra el menú móvil cuando se hace clic en un enlace
   if (navLinks) {
     navLinks.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
@@ -29,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Set active nav link based on current page
+  // Marca en la navegación el enlace activo según la página actual
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
   navLinks.querySelectorAll('a').forEach(link => {
     const href = link.getAttribute('href');
@@ -38,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Accordion (FAQ)
+  // Controla el acordeón de preguntas frecuentes en las secciones FAQ
   document.querySelectorAll('.accordion-header').forEach(header => {
     header.addEventListener('click', () => {
       const item = header.parentElement;
@@ -54,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Animated counters (stats)
+  // Contadores animados que se activan cuando entra la sección en pantalla
   const counters = document.querySelectorAll('.stat-item h3');
   if (counters.length > 0) {
     const animateCounters = () => {
@@ -89,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (statsBar) observer.observe(statsBar);
   }
 
-  // Budget simulator
+  // Simulador de presupuesto con selección de opciones y total dinámico
   const budgetRadios = document.querySelectorAll('input[name="budget"]');
   const totalDisplay = document.getElementById('budget-total');
 
@@ -113,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateBudget();
   }
 
-  // Contact form validation
+  // Validación del formulario de contacto y mensajes de error amigables
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
@@ -162,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Login form
+  // Manejo del formulario de inicio de sesión y verificación de credenciales
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
     loginForm.addEventListener('submit', (e) => {
@@ -183,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Password toggle
+  // Alterna la visibilidad de la contraseña en la página de login
   const toggleBtn = document.getElementById('togglePassword');
   const passwordInput = document.getElementById('loginPassword');
   if (toggleBtn && passwordInput) {
@@ -194,20 +220,107 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Dashboard session check
+  // Verifica que exista sesión activa al ingresar al panel de usuario
   if (window.location.pathname.includes('dashboard.html')) {
     const session = JSON.parse(localStorage.getItem('ft_session') || 'null');
     if (!session) {
       window.location.href = 'login.html';
       return;
     }
+    const users = JSON.parse(localStorage.getItem('ft_users') || '[]');
+    const user = users.find(u => u.email === session.email) || session;
     const welcomeEl = document.getElementById('dashboardWelcome');
     const emailEl = document.getElementById('dashboardEmail');
-    if (welcomeEl) welcomeEl.textContent = '¡Bienvenido de nuevo, ' + session.name + '!';
-    if (emailEl) emailEl.textContent = session.email;
+    if (welcomeEl) welcomeEl.textContent = '¡Bienvenido de nuevo, ' + user.name + '!';
+    if (emailEl) emailEl.textContent = user.email;
   }
 
-  // Logout
+  // Lógica específica para la página de perfil y actualización de datos del usuario
+  if (window.location.pathname.includes('perfil.html')) {
+    const session = JSON.parse(localStorage.getItem('ft_session') || 'null');
+    if (!session) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('ft_users') || '[]');
+    const userIndex = users.findIndex(u => u.email === session.email);
+    const user = users[userIndex] || session;
+
+    const profileForm = document.getElementById('profileForm');
+    const fields = {
+      name: document.getElementById('profileName'),
+      email: document.getElementById('profileEmail'),
+      phone: document.getElementById('profilePhone'),
+      location: document.getElementById('profileLocation'),
+      birthdate: document.getElementById('profileBirthdate'),
+      course: document.getElementById('profileCourse'),
+      bio: document.getElementById('profileBio')
+    };
+    const savedEl = document.getElementById('profileSaved');
+    const avatarEl = document.getElementById('profileAvatar');
+    const summaryNameEl = document.getElementById('profileSummaryName');
+    const summaryCourseEl = document.getElementById('profileSummaryCourse');
+    const sessionEmailEl = document.getElementById('profileSessionEmail');
+
+    const updateSummary = () => {
+      const name = fields.name.value.trim() || 'Usuario';
+      const course = fields.course.value || 'Sin curso asignado';
+      const initials = name.split(' ').filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+      if (avatarEl) avatarEl.textContent = initials || 'FT';
+      if (summaryNameEl) summaryNameEl.textContent = name;
+      if (summaryCourseEl) summaryCourseEl.textContent = course;
+      if (sessionEmailEl) sessionEmailEl.textContent = fields.email.value;
+    };
+
+    fields.name.value = user.name || '';
+    fields.email.value = user.email || session.email;
+    fields.phone.value = user.phone || '';
+    fields.location.value = user.location || '';
+    fields.birthdate.value = user.birthdate || '';
+    fields.course.value = user.course || '';
+    fields.bio.value = user.bio || '';
+    updateSummary();
+
+    Object.values(fields).forEach(field => {
+      field.addEventListener('input', updateSummary);
+    });
+
+    if (profileForm) {
+      profileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const updatedUser = {
+          ...user,
+          name: fields.name.value.trim(),
+          email: fields.email.value.trim(),
+          phone: fields.phone.value.trim(),
+          location: fields.location.value.trim(),
+          birthdate: fields.birthdate.value,
+          course: fields.course.value,
+          bio: fields.bio.value.trim()
+        };
+
+        if (userIndex >= 0) {
+          users[userIndex] = updatedUser;
+        } else {
+          users.push(updatedUser);
+        }
+
+        localStorage.setItem('ft_users', JSON.stringify(users));
+        localStorage.setItem('ft_session', JSON.stringify({ email: updatedUser.email, name: updatedUser.name }));
+        updateSummary();
+
+        if (savedEl) {
+          savedEl.textContent = 'Cambios guardados correctamente';
+          setTimeout(() => {
+            savedEl.textContent = '';
+          }, 3000);
+        }
+      });
+    }
+  }
+
+  // Cierra la sesión eliminando los datos de sesión de localStorage
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
@@ -216,12 +329,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Redirect to dashboard if already logged in (on login page)
+  // Redirige automáticamente al panel si el usuario ya tiene sesión iniciada
   if (window.location.pathname.includes('login.html')) {
     const session = JSON.parse(localStorage.getItem('ft_session') || 'null');
     if (session) {
       window.location.href = 'dashboard.html';
     }
   }
+
+  // Cambiar título cuando el usuario cambia de pestaña
+  const originalTitle = document.title;
+  const hiddenTitle = '¡Volvé a FuthurTech!';
+
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      document.title = hiddenTitle;
+    } else {
+      document.title = originalTitle;
+    }
+  };
+
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  window.addEventListener('focus', () => {
+    document.title = originalTitle;
+  });
 
 });

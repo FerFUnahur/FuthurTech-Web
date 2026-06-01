@@ -8,9 +8,10 @@
 </head>
 <body>
 
+  <!-- Navegación principal: enlaces de la cabecera y menú móvil -->
   <nav class="navbar">
     <div class="container">
-      <a href="index.html" class="logo">Futhur <span>Tech</span></a>
+      <a href="index.html" class="logo">Futhur<span>Tech</span></a>
       <div class="hamburger">
         <span></span><span></span><span></span>
       </div>
@@ -18,13 +19,26 @@
         <li><a href="index.html">Inicio</a></li>
         <li><a href="hardware.html">Hardware</a></li>
         <li><a href="cursos.html">Cursos</a></li>
-        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="index.html#footer-soporte">Soporte</a></li>
         <li><a href="contacto.html">Contacto</a></li>
-        <li><a href="login.html">Ingresar</a></li>
+        <li class="nav-icon"><a href="login.html" title="Iniciar sesión">
+            <svg class="nav-svg icon-login" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
+              <path d="M6 20a6 6 0 0 1 12 0"></path>
+            </svg>
+          </a></li>
+        <li class="nav-icon"><a href="carrito.html" title="Carrito">
+            <svg class="nav-svg icon-cart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M3 3h2l.4 2M7 13h10l4-8H5.4"></path>
+              <circle cx="10" cy="20" r="1"></circle>
+              <circle cx="18" cy="20" r="1"></circle>
+            </svg>
+          </a></li>
       </ul>
     </div>
   </nav>
 
+  <!-- Encabezado de página: preguntas frecuentes y soporte -->
   <section class="page-header">
     <div class="container">
       <h1>Preguntas frecuentes</h1>
@@ -128,24 +142,58 @@
     </div>
   </section>
 
-  <footer class="footer">
+  <footer class="footer" id="footer-soporte">
     <div class="container">
       <div>
-        <a href="index.html" class="logo">Futhur <span style="color: var(--green);">Tech</span></a>
-        <p>Robótica educativa para todos. Aprendé haciendo, construí tu futuro.</p>
-      </div>
-      <div>
-        <h4>Nosotros</h4>
-        <a href="nosotros.html">Quiénes somos</a><br>
+        <a href="nosotros.html">Qui&eacute;nes somos</a><br>
         <a href="faq.html">Preguntas frecuentes</a><br>
-        <a href="contacto.html">Contacto</a><br>
-        <a href="login.html">Ingresar</a>
+        <a href="contacto.html">Contacto</a>
       </div>
       <div>
-        <h4>Contacto</h4>
-        <p>contacto@futhurtech.com</p>
-        <p>+54 11 5555-1234</p>
-        <p>Hurlingham, Buenos Aires</p>
+        <p class="footer-contact-item">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 4h16v16H4z"/>
+            <path d="m4 7 8 6 8-6"/>
+          </svg>
+          contacto@futhurtech.com
+        </p>
+        <p class="footer-contact-item">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 11.5A8.5 8.5 0 0 1 7.4 19L3 20l1.2-4.2A8.5 8.5 0 1 1 20 11.5z"/>
+            <path d="M8.5 8.5c.2 4 3 6.3 7 7l1.2-1.8-2.3-1.2-.9.9c-1.5-.7-2.4-1.7-3-3l.9-.9-1.2-2.3z"/>
+          </svg>
+          +54 11 5555-1234
+        </p>
+        <p class="footer-contact-item">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 21s7-5.5 7-12A7 7 0 0 0 5 9c0 6.5 7 12 7 12z"/>
+            <circle cx="12" cy="9" r="2.5"/>
+          </svg>
+          Hurlingham, Buenos Aires
+        </p>
+      </div>
+      <div class="footer-social">
+        <h4>Redes</h4>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="18" height="18" rx="5"/>
+              <path d="M16 11.37a4 4 0 1 1-4.5-4.5 4 4 0 0 1 4.5 4.5z"/>
+              <path d="M17.5 6.5h.01"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 7.2a2.44 2.44 0 0 0-1.7-1.72C18.83 5 12 5 12 5s-6.83 0-8.3.48A2.44 2.44 0 0 0 2 7.2 25.31 25.31 0 0 0 2 12a25.31 25.31 0 0 0 .48 4.8 2.44 2.44 0 0 0 1.72 1.72C5.17 19 12 19 12 19s6.83 0 8.3-.48a2.44 2.44 0 0 0 1.7-1.72A25.31 25.31 0 0 0 22 12a25.31 25.31 0 0 0-.48-4.8z"/>
+              <path d="M10 15V9l5 3-5 3z"/>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
     <div class="container">
@@ -158,3 +206,4 @@
   <script src="js/main.js"></script>
 </body>
 </html>
+
