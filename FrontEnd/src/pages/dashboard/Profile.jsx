@@ -1,19 +1,68 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../services/api'
 
+const argentinaProvinces = [
+  'Gran Buenos Aires',
+  'Buenos Aires (interior)',
+  'Ciudad Autónoma de Buenos Aires',
+  'Catamarca',
+  'Chaco',
+  'Chubut',
+  'Córdoba',
+  'Corrientes',
+  'Entre Ríos',
+  'Formosa',
+  'Jujuy',
+  'La Pampa',
+  'La Rioja',
+  'Mendoza',
+  'Misiones',
+  'Neuquén',
+  'Río Negro',
+  'Salta',
+  'San Juan',
+  'San Luis',
+  'Santa Cruz',
+  'Santa Fe',
+  'Santiago del Estero',
+  'Tierra del Fuego',
+  'Tucumán',
+]
+
 function Profile() {
-  const { user, login } = useAuth()
-  const [form, setForm] = useState({ name: user?.name || '', email: user?.email || '', bio: user?.bio || '' })
+  const { user, setUser } = useAuth()
+  const [form, setForm] = useState({
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    birthDate: user?.birthDate || '',
+    city: user?.city || '',
+    province: user?.province || '',
+    bio: user?.bio || '',
+  })
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+
+  useEffect(() => {
+    setForm({
+      name: user?.name || '',
+      email: user?.email || '',
+      phone: user?.phone || '',
+      birthDate: user?.birthDate || '',
+      city: user?.city || '',
+      province: user?.province || '',
+      bio: user?.bio || '',
+    })
+  }, [user])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSaving(true)
     try {
-      await api.put(`/users/${user.id}`, form)
+      const res = await api.put(`/users/${user.id}`, form)
+      setUser(res.data.user)
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
     } catch (err) {
@@ -46,7 +95,34 @@ function Profile() {
                   <Form.Control type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} required />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Biografía</Form.Label>
+                  <Form.Label>Número de teléfono</Form.Label>
+                  <Form.Control type="tel" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} placeholder="Ej: 11 1234-5678" />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Fecha de nacimiento</Form.Label>
+                  <Form.Control type="date" value={form.birthDate} onChange={e => setForm({...form, birthDate: e.target.value})} />
+                </Form.Group>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Ciudad</Form.Label>
+                      <Form.Control type="text" value={form.city} onChange={e => setForm({...form, city: e.target.value})} placeholder="Ej: Hurlingham" />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Provincia / región</Form.Label>
+                      <Form.Select value={form.province} onChange={e => setForm({...form, province: e.target.value})}>
+                        <option value="">Seleccioná una provincia o región</option>
+                        {argentinaProvinces.map(province => (
+                          <option key={province} value={province}>{province}</option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Form.Group className="mb-3">
+                  <Form.Label>Sobre vos</Form.Label>
                   <Form.Control as="textarea" rows={4} value={form.bio} onChange={e => setForm({...form, bio: e.target.value})} placeholder="Contá algo sobre vos..." />
                 </Form.Group>
                 <Button type="submit" className="btn-verde w-100" disabled={saving}>

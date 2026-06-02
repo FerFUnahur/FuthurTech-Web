@@ -3,6 +3,19 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 const { JWT_SECRET } = require('../middleware/auth');
 
+const publicUser = (user) => ({
+  id: user.id,
+  name: user.name,
+  email: user.email,
+  role: user.role,
+  avatar: user.avatar,
+  bio: user.bio,
+  phone: user.phone,
+  birthDate: user.birthDate,
+  city: user.city,
+  province: user.province,
+});
+
 exports.register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -13,7 +26,7 @@ exports.register = async (req, res) => {
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
     res.status(201).json({
       token,
-      user: { id: user.id, name: user.name, email: user.email, role: user.role, avatar: user.avatar, bio: user.bio },
+      user: publicUser(user),
     });
   } catch (error) {
     res.status(500).json({ error: 'Error al registrar usuario' });
@@ -30,7 +43,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
     res.json({
       token,
-      user: { id: user.id, name: user.name, email: user.email, role: user.role, avatar: user.avatar, bio: user.bio },
+      user: publicUser(user),
     });
   } catch (error) {
     res.status(500).json({ error: 'Error al iniciar sesión' });
@@ -38,5 +51,5 @@ exports.login = async (req, res) => {
 };
 
 exports.me = async (req, res) => {
-  res.json({ user: req.user });
+  res.json({ user: publicUser(req.user) });
 };

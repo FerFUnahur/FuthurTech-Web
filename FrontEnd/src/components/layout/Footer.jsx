@@ -3,15 +3,15 @@ import { Container, Row, Col } from 'react-bootstrap'
 
 function Footer() {
   return (
-    <footer className="footer-custom text-white py-4 mt-auto">
+    <footer className="footer-custom text-white pt-3 pb-2 mt-auto">
       <Container>
-        <Row>
-          <Col md={4} className="mb-3">
-            <h5 className="fw-bold"><i className="bi bi-cpu me-2"></i>FuthurTech</h5>
-            <p className="small text-light-emphasis">Educación y robótica para el futuro. Transformando ideas en tecnología.</p>
+        <Row className="g-5">
+          <Col md={5} className="mb-2">
+            <h5 className="fw-bold mb-2"><i className="bi bi-cpu me-2"></i>FuthurTech</h5>
+            <p className="small text-light-emphasis mb-0">Educación y robótica para el futuro. Transformando ideas en tecnología.</p>
           </Col>
-          <Col md={2} className="mb-3">
-            <h6 className="fw-bold">Navegación</h6>
+          <Col md={2} className="mb-2">
+            <h6 className="fw-bold mb-2">Navegación</h6>
             <div className="d-flex flex-column gap-1">
               <Link to="/" className="footer-link">Inicio</Link>
               <Link to="/productos" className="footer-link">Productos</Link>
@@ -19,16 +19,16 @@ function Footer() {
               <Link to="/nosotros" className="footer-link">Nosotros</Link>
             </div>
           </Col>
-          <Col md={3} className="mb-3">
-            <h6 className="fw-bold">Ayuda</h6>
+          <Col md={2} className="mb-2">
+            <h6 className="fw-bold mb-2">Ayuda</h6>
             <div className="d-flex flex-column gap-1">
               <Link to="/faq" className="footer-link">FAQ</Link>
               <Link to="/contacto" className="footer-link">Contacto</Link>
             </div>
           </Col>
-          <Col md={3} className="mb-3">
-            <h6 className="fw-bold">Seguinos</h6>
-            <div className="d-flex gap-3 fs-5">
+          <Col md={3} className="mb-2 text-center">
+            <h6 className="fw-bold mb-2">Seguinos</h6>
+            <div className="d-flex gap-3 fs-5 justify-content-center">
               <a href="#" className="text-white"><i className="bi bi-instagram"></i></a>
               <a href="#" className="text-white"><i className="bi bi-facebook"></i></a>
               <a href="#" className="text-white"><i className="bi bi-youtube"></i></a>
@@ -36,7 +36,7 @@ function Footer() {
             </div>
           </Col>
         </Row>
-        <hr className="border-light opacity-25" />
+        <hr className="border-light opacity-25 my-2" />
         <p className="text-center small text-light-emphasis mb-0">&copy; {new Date().getFullYear()} FuthurTech. Todos los derechos reservados.</p>
       </Container>
     </footer>

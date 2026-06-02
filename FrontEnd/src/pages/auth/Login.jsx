@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap'
+import { Container, Row, Col, Card, Form, Button, Alert, Spinner, InputGroup } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
 
 function Login() {
@@ -9,16 +9,32 @@ function Login() {
   const [form, setForm] = useState({ email: 'student@futhurtech.com', password: '123456' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
-  if (user) { navigate('/dashboard'); return null }
+  if (user) {
+    if (user.role === 'admin') {
+      navigate('/admin');
+    } else if (user.role === 'instructor') {
+      navigate('/instructor');
+    } else {
+      navigate('/dashboard');
+    }
+    return null;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setLoading(true)
     try {
-      await login(form.email, form.password)
-      navigate('/dashboard')
+      const userData = await login(form.email, form.password)
+      if (userData.role === 'admin') {
+        navigate('/admin')
+      } else if (userData.role === 'instructor') {
+        navigate('/instructor')
+      } else {
+        navigate('/dashboard')
+      }
     } catch (err) {
       setError(err.response?.data?.error || 'Error al iniciar sesión')
     } finally {
@@ -41,7 +57,17 @@ function Login() {
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Contraseña</Form.Label>
-                  <Form.Control type="password" value={form.password} onChange={e => setForm({...form, password: e.target.value})} required placeholder="Tu contraseña" />
+                  <InputGroup>
+                    <Form.Control type={showPassword ? 'text' : 'password'} value={form.password} onChange={e => setForm({...form, password: e.target.value})} required placeholder="Tu contraseña" />
+                    <Button
+                      type="button"
+                      variant="outline-secondary"
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                    >
+                      <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                    </Button>
+                  </InputGroup>
                 </Form.Group>
                 <Button type="submit" className="btn-verde w-100 py-2 fw-bold" disabled={loading}>
                   {loading ? <Spinner size="sm" animation="border" /> : 'Ingresar'}
@@ -53,6 +79,7 @@ function Login() {
               <div className="bg-light p-3 rounded mt-3">
                 <p className="small text-muted mb-1 fw-semibold">Demo:</p>
                 <p className="small text-muted mb-0">Admin: admin@futhurtech.com / 123456</p>
+                <p className="small text-muted mb-0">Instructor: instructor@futhurtech.com / 123456</p>
                 <p className="small text-muted mb-0">Student: student@futhurtech.com / 123456</p>
               </div>
             </Card.Body>

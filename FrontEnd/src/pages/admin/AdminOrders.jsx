@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Container, Table, Button, Badge, Spinner } from 'react-bootstrap'
+import { Table, Button, Badge, Spinner } from 'react-bootstrap'
 import api from '../../services/api'
 
 const statusColors = {
@@ -27,7 +27,7 @@ function AdminOrders() {
   if (loading) return <div className="text-center py-5"><Spinner animation="border" /></div>
 
   return (
-    <Container fluid className="py-4">
+    <div>
       <h4 className="fw-bold mb-4"><i className="bi bi-cart me-2"></i>Gestionar Pedidos</h4>
       {orders.length === 0 ? (
         <p className="text-muted">No hay pedidos registrados.</p>
@@ -72,7 +72,7 @@ function AdminOrders() {
           </tbody>
         </Table>
       )}
-    </Container>
+    </div>
   )
 }
 

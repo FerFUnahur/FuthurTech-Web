@@ -100,12 +100,20 @@ function CourseDetail() {
               </>
             ) : user ? (
               <>
-                <h4 className="fw-bold text-azul mb-3">
-                  {course.price === 0 ? 'Gratis' : `$${course.price.toLocaleString()}`}
-                </h4>
-                <Button className="btn-verde w-100" onClick={handleEnroll} disabled={enrolling}>
-                  {enrolling ? 'Inscribiendo...' : 'Inscribirme ahora'}
-                </Button>
+                {user.role === 'admin' ? (
+                  <Alert variant="warning">
+                    <i className="bi bi-info-circle me-2"></i>Los administradores no pueden inscribirse a cursos
+                  </Alert>
+                ) : (
+                  <>
+                    <h4 className="fw-bold text-azul mb-3">
+                      {course.price === 0 ? 'Gratis' : `$${course.price.toLocaleString()}`}
+                    </h4>
+                    <Button className="btn-verde w-100" onClick={handleEnroll} disabled={enrolling}>
+                      {enrolling ? 'Inscribiendo...' : 'Inscribirme ahora'}
+                    </Button>
+                  </>
+                )}
               </>
             ) : (
               <>

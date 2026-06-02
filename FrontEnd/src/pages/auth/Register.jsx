@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap'
+import { Container, Row, Col, Card, Form, Button, Alert, Spinner, InputGroup } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
 
 function Register() {
@@ -9,6 +9,8 @@ function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   if (user) { navigate('/dashboard'); return null }
 
@@ -49,11 +51,31 @@ function Register() {
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Contraseña</Form.Label>
-                  <Form.Control type="password" value={form.password} onChange={e => setForm({...form, password: e.target.value})} required placeholder="Mínimo 6 caracteres" minLength={6} />
+                  <InputGroup>
+                    <Form.Control type={showPassword ? 'text' : 'password'} value={form.password} onChange={e => setForm({...form, password: e.target.value})} required placeholder="Mínimo 6 caracteres" minLength={6} />
+                    <Button
+                      type="button"
+                      variant="outline-secondary"
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                    >
+                      <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                    </Button>
+                  </InputGroup>
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Confirmar contraseña</Form.Label>
-                  <Form.Control type="password" value={form.confirmPassword} onChange={e => setForm({...form, confirmPassword: e.target.value})} required placeholder="Repetí la contraseña" />
+                  <InputGroup>
+                    <Form.Control type={showConfirmPassword ? 'text' : 'password'} value={form.confirmPassword} onChange={e => setForm({...form, confirmPassword: e.target.value})} required placeholder="Repetí la contraseña" />
+                    <Button
+                      type="button"
+                      variant="outline-secondary"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      aria-label={showConfirmPassword ? 'Ocultar confirmación de contraseña' : 'Mostrar confirmación de contraseña'}
+                    >
+                      <i className={`bi ${showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                    </Button>
+                  </InputGroup>
                 </Form.Group>
                 <Button type="submit" className="btn-verde w-100 py-2 fw-bold" disabled={loading}>
                   {loading ? <Spinner size="sm" animation="border" /> : 'Crear Cuenta'}

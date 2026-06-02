@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
-import { Container, Table, Button, Modal, Form, Spinner, Badge, Alert } from 'react-bootstrap'
+import { Table, Button, Modal, Form, Spinner, Badge, Alert } from 'react-bootstrap'
+
 import api from '../../services/api'
 
-function AdminUsers() {
+export default function AdminUsers() {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [show, setShow] = useState(false)
   const [editUser, setEditUser] = useState(null)
-  const [form, setForm] = useState({ name: '', email: '', role: 'student' })
+  const [form, setForm] = useState({ role: 'student' })
   const [error, setError] = useState('')
 
   const loadUsers = () => {
@@ -18,7 +19,7 @@ function AdminUsers() {
 
   const openEdit = (user) => {
     setEditUser(user)
-    setForm({ name: user.name, email: user.email, role: user.role })
+    setForm({ role: user.role })
     setShow(true)
   }
 
@@ -41,8 +42,11 @@ function AdminUsers() {
   if (loading) return <div className="text-center py-5"><Spinner animation="border" /></div>
 
   return (
-    <Container fluid className="py-4">
+    <div>
+      {/* Tip: en el panel admin las pestañas se mueven por rutas internas */}
+
       <h4 className="fw-bold mb-4"><i className="bi bi-people me-2"></i>Gestionar Usuarios</h4>
+
       <Table responsive striped hover>
         <thead className="table-dark">
           <tr>
@@ -70,18 +74,14 @@ function AdminUsers() {
       </Table>
 
       <Modal show={show} onHide={() => setShow(false)}>
-        <Modal.Header closeButton><Modal.Title>Editar Usuario</Modal.Title></Modal.Header>
+        <Modal.Header closeButton><Modal.Title>Cambiar Rol - {editUser?.name}</Modal.Title></Modal.Header>
         <Modal.Body>
           {error && <Alert variant="danger">{error}</Alert>}
+          <p className="text-muted small mb-3">
+            <i className="bi bi-info-circle me-1"></i>
+            Solo puedes cambiar el rol del usuario. Para editar nombre, email u otros datos, el usuario debe actualizar su propio perfil.
+          </p>
           <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Nombre</Form.Label>
-              <Form.Control value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
-            </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Rol</Form.Label>
               <Form.Select value={form.role} onChange={e => setForm({...form, role: e.target.value})}>
@@ -97,8 +97,6 @@ function AdminUsers() {
           <Button className="btn-verde" onClick={handleSave}>Guardar</Button>
         </Modal.Footer>
       </Modal>
-    </Container>
+    </div>
   )
 }
-
-export default AdminUsers
