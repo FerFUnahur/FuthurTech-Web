@@ -1,19 +1,34 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../services/api'
 
 function Profile() {
-  const { user, login } = useAuth()
-  const [form, setForm] = useState({ name: user?.name || '', email: user?.email || '', bio: user?.bio || '' })
+  const { user, setUser } = useAuth()
+  const [form, setForm] = useState({
+    name: user?.name || '',
+    email: user?.email || '',
+    birthDate: user?.birthDate || '',
+    bio: user?.bio || '',
+  })
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+
+  useEffect(() => {
+    setForm({
+      name: user?.name || '',
+      email: user?.email || '',
+      birthDate: user?.birthDate || '',
+      bio: user?.bio || '',
+    })
+  }, [user])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSaving(true)
     try {
-      await api.put(`/users/${user.id}`, form)
+      const res = await api.put(`/users/${user.id}`, form)
+      setUser(res.data.user)
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
     } catch (err) {
@@ -46,7 +61,11 @@ function Profile() {
                   <Form.Control type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} required />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Biografía</Form.Label>
+                  <Form.Label>Fecha de nacimiento</Form.Label>
+                  <Form.Control type="date" value={form.birthDate} onChange={e => setForm({...form, birthDate: e.target.value})} />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Sobre vos</Form.Label>
                   <Form.Control as="textarea" rows={4} value={form.bio} onChange={e => setForm({...form, bio: e.target.value})} placeholder="Contá algo sobre vos..." />
                 </Form.Group>
                 <Button type="submit" className="btn-verde w-100" disabled={saving}>

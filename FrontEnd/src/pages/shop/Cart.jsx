@@ -14,6 +14,10 @@ function Cart() {
 
   const handleCheckout = async () => {
     if (!user) { navigate('/login'); return }
+    if (user.role === 'admin') { 
+      alert('Los administradores no pueden realizar compras'); 
+      return; 
+    }
     setOrdering(true)
     try {
       await api.post('/orders', {
@@ -85,9 +89,15 @@ function Cart() {
             <Button variant="outline-secondary" onClick={clearCart}>Vaciar carrito</Button>
             <div className="text-end">
               <h4 className="fw-bold text-azul">Total: ${total.toLocaleString()}</h4>
-              <Button className="btn-verde btn-lg" onClick={handleCheckout} disabled={ordering}>
-                {ordering ? 'Procesando...' : 'Realizar Pedido'}
-              </Button>
+              {user?.role === 'admin' ? (
+                <Button className="btn-lg" disabled style={{ backgroundColor: '#ccc', color: '#666' }}>
+                  <i className="bi bi-ban me-2"></i>Admin no puede comprar
+                </Button>
+              ) : (
+                <Button className="btn-verde btn-lg" onClick={handleCheckout} disabled={ordering}>
+                  {ordering ? 'Procesando...' : 'Realizar Pedido'}
+                </Button>
+              )}
             </div>
           </div>
         </>

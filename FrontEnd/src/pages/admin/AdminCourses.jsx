@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Container, Table, Button, Modal, Form, Spinner, Badge, Alert } from 'react-bootstrap'
+import { Table, Button, Modal, Form, Spinner, Badge, Alert } from 'react-bootstrap'
 import api from '../../services/api'
 
 function AdminCourses() {
@@ -53,7 +53,7 @@ function AdminCourses() {
   if (loading) return <div className="text-center py-5"><Spinner animation="border" /></div>
 
   return (
-    <Container fluid className="py-4">
+    <div>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h4 className="fw-bold mb-0"><i className="bi bi-book me-2"></i>Gestionar Cursos</h4>
         <Button className="btn-verde" onClick={() => { setEditCourse(null); setForm({ title: '', description: '', price: 0, categoryId: '', status: 'borrador' }); setShow(true) }}>
@@ -126,7 +126,7 @@ function AdminCourses() {
           <Button className="btn-verde" onClick={handleSave}>Guardar</Button>
         </Modal.Footer>
       </Modal>
-    </Container>
+    </div>
   )
 }
 

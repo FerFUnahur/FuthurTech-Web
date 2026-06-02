@@ -9,14 +9,24 @@ function Home() {
           <Row className="align-items-center">
             <Col lg={7}>
               <h1>Transformá tu futuro con <span className="text-verde">tecnología</span> y <span className="text-naranja">robótica</span></h1>
-              <p className="fs-5 my-4 opacity-75">Cursos autoasistidos, kits de robótica y una comunidad apasionada por la innovación. Todo lo que necesitás para dar el próximo paso.</p>
+              <p className="hero-lead fs-5 my-4">Cursos autoasistidos, kits de robótica y una comunidad apasionada por la innovación. Todo lo que necesitás para dar el próximo paso.</p>
               <div className="d-flex gap-3 flex-wrap">
                 <Button as={Link} to="/cursos" size="lg" className="btn-verde fw-bold px-4">Explorar Cursos</Button>
                 <Button as={Link} to="/productos" size="lg" variant="outline-light" className="fw-bold px-4">Ver Productos</Button>
               </div>
             </Col>
-            <Col lg={5} className="text-center d-none d-lg-block">
-              <div className="hero-icon"><i className="bi bi-robot"></i></div>
+            <Col lg={5} className="d-none d-lg-block">
+              <div className="hero-visual">
+                <div className="hero-robot-icon">
+                  <div className="circle">
+                    <div className="circle-inner">
+                      <div className="icon-center">
+                        <i className="bi bi-robot"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </Col>
           </Row>
         </Container>

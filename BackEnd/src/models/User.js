@@ -9,6 +9,10 @@ const User = sequelize.define('User', {
   role: { type: DataTypes.ENUM('student', 'instructor', 'admin'), defaultValue: 'student' },
   avatar: { type: DataTypes.STRING, defaultValue: '' },
   bio: { type: DataTypes.TEXT, defaultValue: '' },
+  phone: { type: DataTypes.STRING, defaultValue: '' },
+  birthDate: { type: DataTypes.DATEONLY, allowNull: true },
+  city: { type: DataTypes.STRING, defaultValue: '' },
+  province: { type: DataTypes.STRING, defaultValue: '' },
 }, { timestamps: true });
 
 module.exports = User;
