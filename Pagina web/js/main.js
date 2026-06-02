@@ -6,8 +6,6 @@
       email: 'admin@futhurtech.com',
       password: 'admin123',
       name: 'Admin',
-      phone: '',
-      location: '',
       birthdate: '',
       course: 'Robótica Inicial',
       bio: ''
@@ -15,21 +13,8 @@
     localStorage.setItem('ft_users', JSON.stringify(users));
   }
 
-  const users = JSON.parse(localStorage.getItem('ft_users') || '[]');
-  let changed = false;
-  users.forEach(user => {
-    if (user.phone === '+54 11 5555-1234') {
-      user.phone = '';
-      changed = true;
-    }
-    if (user.location === 'Hurlingham, Buenos Aires') {
-      user.location = '';
-      changed = true;
-    }
-  });
-  if (changed) {
-    localStorage.setItem('ft_users', JSON.stringify(users));
-  }
+  // La lógica para corregir datos antiguos de 'phone' y 'location' se elimina
+  // ya que estos campos ya no serán utilizados.
 })();
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -251,8 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const fields = {
       name: document.getElementById('profileName'),
       email: document.getElementById('profileEmail'),
-      phone: document.getElementById('profilePhone'),
-      location: document.getElementById('profileLocation'),
       birthdate: document.getElementById('profileBirthdate'),
       course: document.getElementById('profileCourse'),
       bio: document.getElementById('profileBio')
@@ -275,8 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fields.name.value = user.name || '';
     fields.email.value = user.email || session.email;
-    fields.phone.value = user.phone || '';
-    fields.location.value = user.location || '';
     fields.birthdate.value = user.birthdate || '';
     fields.course.value = user.course || '';
     fields.bio.value = user.bio || '';
@@ -293,8 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
           ...user,
           name: fields.name.value.trim(),
           email: fields.email.value.trim(),
-          phone: fields.phone.value.trim(),
-          location: fields.location.value.trim(),
           birthdate: fields.birthdate.value,
           course: fields.course.value,
           bio: fields.bio.value.trim()

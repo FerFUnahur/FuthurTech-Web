@@ -29,10 +29,10 @@ function Footer() {
           <Col md={3} className="mb-2 text-center">
             <h6 className="fw-bold mb-2">Seguinos</h6>
             <div className="d-flex gap-3 fs-5 justify-content-center">
-              <a href="#" className="text-white"><i className="bi bi-instagram"></i></a>
-              <a href="#" className="text-white"><i className="bi bi-facebook"></i></a>
-              <a href="#" className="text-white"><i className="bi bi-youtube"></i></a>
-              <a href="#" className="text-white"><i className="bi bi-linkedin"></i></a>
+              <a href="https://www.instagram.com/futhurtech_argentina/" className="text-white" target="_blank" rel="noopener noreferrer"><i className="bi bi-instagram"></i></a>
+              <a href="https://www.facebook.com/FuthurtechArgentina/" className="text-white" target="_blank" rel="noopener noreferrer"><i className="bi bi-facebook"></i></a>
+              <a href="https://www.youtube.com/channel/UCfmf7oKje5CYEKXvQrP4sMQ" className="text-white" target="_blank" rel="noopener noreferrer"><i className="bi bi-youtube"></i></a>
+              <a href="https://www.linkedin.com/company/futhur-tech/" className="text-white" target="_blank" rel="noopener noreferrer"><i className="bi bi-linkedin"></i></a>
             </div>
           </Col>
         </Row>

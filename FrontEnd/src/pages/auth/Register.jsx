@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext'
 function Register() {
   const { register, user } = useAuth()
   const navigate = useNavigate()
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' })
+  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '', birthDate: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -23,7 +23,7 @@ function Register() {
     }
     setLoading(true)
     try {
-      await register({ name: form.name, email: form.email, password: form.password })
+      await register({ name: form.name, email: form.email, password: form.password, birthDate: form.birthDate })
       navigate('/dashboard')
     } catch (err) {
       setError(err.response?.data?.error || 'Error al registrarse')
@@ -48,6 +48,10 @@ function Register() {
                 <Form.Group className="mb-3">
                   <Form.Label>Email</Form.Label>
                   <Form.Control type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} required placeholder="tu@email.com" />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Fecha de nacimiento</Form.Label>
+                  <Form.Control type="date" value={form.birthDate} onChange={e => setForm({...form, birthDate: e.target.value})} required />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Contraseña</Form.Label>

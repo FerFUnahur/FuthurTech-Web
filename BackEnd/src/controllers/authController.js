@@ -10,19 +10,16 @@ const publicUser = (user) => ({
   role: user.role,
   avatar: user.avatar,
   bio: user.bio,
-  phone: user.phone,
   birthDate: user.birthDate,
-  city: user.city,
-  province: user.province,
 });
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, birthDate } = req.body;
     const exists = await User.findOne({ where: { email } });
     if (exists) return res.status(400).json({ error: 'El email ya está registrado' });
     const hashed = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, password: hashed, role: role || 'student' });
+    const user = await User.create({ name, email, password: hashed, role: role || 'student', birthDate });
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
     res.status(201).json({
       token,

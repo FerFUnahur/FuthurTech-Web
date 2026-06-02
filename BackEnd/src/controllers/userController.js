@@ -1,12 +1,12 @@
 const { User } = require('../models');
 
 exports.getAll = async (req, res) => {
-  const users = await User.findAll({ attributes: { exclude: ['password'] } });
+  const users = await User.findAll({ attributes: { exclude: ['password', 'phone', 'city', 'province'] } });
   res.json(users);
 };
 
 exports.getById = async (req, res) => {
-  const user = await User.findByPk(req.params.id, { attributes: { exclude: ['password'] } });
+  const user = await User.findByPk(req.params.id, { attributes: { exclude: ['password', 'phone', 'city', 'province'] } });
   if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
   res.json(user);
 };
@@ -20,7 +20,7 @@ exports.update = async (req, res) => {
     return res.status(403).json({ error: 'No puedes editar este usuario' });
   }
 
-  const { name, email, avatar, bio, phone, birthDate, city, province, role } = req.body;
+  const { name, email, avatar, bio, birthDate, role } = req.body;
   const updates = {};
 
   // Los usuarios solo pueden editar sus propios datos (excepto rol y email)
@@ -29,10 +29,7 @@ exports.update = async (req, res) => {
     if (name !== undefined) updates.name = name;
     if (avatar !== undefined) updates.avatar = avatar;
     if (bio !== undefined) updates.bio = bio;
-    if (phone !== undefined) updates.phone = phone;
     if (birthDate !== undefined) updates.birthDate = birthDate || null;
-    if (city !== undefined) updates.city = city;
-    if (province !== undefined) updates.province = province;
   } else if (req.user.role === 'admin') {
     // Admin editando a otro usuario - solo puede cambiar rol
     if (role !== undefined) updates.role = role;
@@ -49,10 +46,7 @@ exports.update = async (req, res) => {
       role: user.role,
       avatar: user.avatar,
       bio: user.bio,
-      phone: user.phone,
       birthDate: user.birthDate,
-      city: user.city,
-      province: user.province,
     },
   });
 };
