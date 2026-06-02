@@ -2,6 +2,9 @@ const { v4: uuidv4 } = require('uuid');
 const { Enrollment, LessonProgress, Course, Module, Lesson, Certificate } = require('../models');
 
 exports.enroll = async (req, res) => {
+  if (req.user.role === 'admin') {
+    return res.status(403).json({ error: 'Los administradores no pueden inscribirse a cursos' });
+  }
   const course = await Course.findByPk(req.params.courseId);
   if (!course) return res.status(404).json({ error: 'Curso no encontrado' });
   const exists = await Enrollment.findOne({ where: { userId: req.user.id, courseId: req.params.courseId } });

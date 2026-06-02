@@ -21,6 +21,9 @@ exports.getById = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
+  if (req.user.role === 'admin') {
+    return res.status(403).json({ error: 'Los administradores no pueden realizar compras' });
+  }
   const { items } = req.body;
   let total = 0;
   const orderItems = [];

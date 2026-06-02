@@ -40,21 +40,29 @@ function Navbar() {
             </Nav.Link>
             {user ? (
               <NavDropdown title={<><i className="bi bi-person-circle me-1"></i>{user.name}</>} id="user-dropdown" align="end">
-                <NavDropdown.Item as={Link} to="/dashboard">Mi Panel</NavDropdown.Item>
+                {user.role === 'admin' && (
+                  <NavDropdown.Item as={Link} to="/admin">Mi Panel</NavDropdown.Item>
+                )}
+
+                {user.role === 'instructor' && (
+                  <NavDropdown.Item as={Link} to="/instructor">Mi Panel</NavDropdown.Item>
+                )}
+
+
+                {user.role === 'student' && (
+                  <NavDropdown.Item as={Link} to="/dashboard">Mi Panel</NavDropdown.Item>
+                )}
+
                 <NavDropdown.Item as={Link} to="/dashboard/perfil">Mi Perfil</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/dashboard/certificados">Mis Certificados</NavDropdown.Item>
-                {(user.role === 'admin' || user.role === 'instructor') && (
-                  <>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item as={Link} to="/admin">Panel Admin</NavDropdown.Item>
-                  </>
+                {user.role === 'student' && (
+                  <NavDropdown.Item as={Link} to="/dashboard/certificados">Mis Certificados</NavDropdown.Item>
                 )}
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={handleLogout}>Cerrar Sesión</NavDropdown.Item>
               </NavDropdown>
             ) : (
               <>
-                <Nav.Link as={Link} to="/login" className="btn btn-outline-light btn-sm text-white px-3">Ingresar</Nav.Link>
+                <Nav.Link as={Link} to="/login" className="btn btn-success btn-sm px-3">Ingresar</Nav.Link>
                 <Nav.Link as={Link} to="/registro" className="btn btn-success btn-sm px-3">Registrarse</Nav.Link>
               </>
             )}

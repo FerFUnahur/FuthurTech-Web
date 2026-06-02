@@ -23,6 +23,10 @@ function ProductDetail() {
   if (!product) return <Container className="py-5"><Alert variant="warning">Producto no encontrado</Alert></Container>
 
   const handleAdd = () => {
+    if (user?.role === 'admin') {
+      alert('Los administradores no pueden comprar productos')
+      return
+    }
     addItem({ id: product.id, name: product.name, price: product.price, image: product.image })
     setAdded(true)
     setTimeout(() => setAdded(false), 2000)
@@ -46,6 +50,10 @@ function ProductDetail() {
           {user ? (
             added ? (
               <Button variant="success" disabled><i className="bi bi-check-lg me-1"></i>Agregado al carrito</Button>
+            ) : user?.role === 'admin' ? (
+              <Button className="btn-verde" size="lg" disabled>
+                <i className="bi bi-ban me-2"></i>Admin no puede comprar
+              </Button>
             ) : (
               <Button className="btn-verde" size="lg" onClick={handleAdd} disabled={product.stock === 0}>
                 <i className="bi bi-cart-plus me-2"></i>Agregar al Carrito

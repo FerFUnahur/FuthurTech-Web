@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { Container, Row, Col, Card, Button, Spinner, Badge } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../services/api'
@@ -12,6 +12,10 @@ function Dashboard() {
   useEffect(() => {
     api.get('/enrollments').then(res => setEnrollments(res.data)).catch(() => {}).finally(() => setLoading(false))
   }, [])
+
+  if (user?.role === 'admin' || user?.role === 'instructor') {
+    return <Navigate to="/admin" replace />
+  }
 
   return (
     <Container className="py-5">

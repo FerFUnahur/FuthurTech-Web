@@ -1,8 +1,8 @@
 :root {
   --verde: #00A859;
-  --naranja: #FF6B35;
-  --azul: #0047AB;
-  --azul-oscuro: #003380;
+  --naranja: #00A859;
+  --azul: #0096C7;
+  --azul-oscuro: #0074A3;
 }
 
 .navbar-custom {
@@ -11,20 +11,54 @@
 }
 
 .navbar-custom .nav-link {
-  color: rgba(255,255,255,0.85) !important;
+  color: rgba(255,255,255,0.95) !important;
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
   transition: color 0.2s;
 }
+
+/* Título FuthurTech más grande que los items */
+.navbar-custom .navbar-brand {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+
+/* Hace el navbar más grande */
+.navbar-custom {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 
 .navbar-custom .nav-link:hover {
   color: #fff !important;
 }
 
 .footer-custom {
-  background: linear-gradient(135deg, var(--azul-oscuro) 0%, #002244 100%);
+  background: linear-gradient(135deg, var(--azul-oscuro) 0%, #00577A 100%);
 }
 
+ .footer-custom .text-light-emphasis {
+  color: rgba(255,255,255,0.88) !important;
+}
+
+/* Para que la línea de copyright no quede tan chiquita */
+.footer-custom p.small {
+  font-size: 1rem !important;
+  line-height: 1.4;
+}
+
+.footer-custom hr.my-2 {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+
 .footer-link {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.9);
   text-decoration: none;
   font-size: 0.9rem;
   transition: color 0.2s;
@@ -57,17 +91,67 @@
   font-weight: 800;
   font-size: 2.8rem;
   line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
 
-.hero-icon {
-  font-size: 8rem;
-  color: rgba(255,255,255,0.2);
-  animation: pulse 2s infinite;
+.hero-lead {
+  color: rgba(255,255,255,0.95);
+  font-weight: 500;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.22);
+}
+
+.hero-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-robot-icon {
+  width: 300px;
+  height: 300px;
+  position: relative;
+}
+
+.hero-robot-icon .circle {
+  width: 100%;
+  height: 100%;
+  border: 4px solid rgba(0,150,199,0.75);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 28px rgba(0,150,199,0.35), inset 0 0 22px rgba(0,150,199,0.18);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.hero-robot-icon .circle-inner {
+  width: 70%;
+  height: 70%;
+  border: 3px solid rgba(0,168,89,0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 24px rgba(0,168,89,0.4), inset 0 0 18px rgba(0,168,89,0.2);
+  animation: pulse 3s ease-in-out infinite 0.5s;
+}
+
+.hero-robot-icon .icon-center {
+  color: rgba(255,255,255,0.9);
+  font-size: 5rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 16px rgba(0,168,89,0.65)) drop-shadow(0 0 20px rgba(0,150,199,0.35));
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
 }
 
 .stats-bar {
@@ -100,8 +184,31 @@
 }
 
 .btn-naranja:hover {
-  background-color: #e55a2b;
-  border-color: #e55a2b;
+  background-color: #008c48;
+  border-color: #008c48;
+  color: white;
+}
+
+.btn-azul {
+  background-color: var(--azul);
+  border-color: var(--azul);
+  color: white;
+}
+
+.btn-azul:hover {
+  background-color: #0074A3;
+  border-color: #0074A3;
+  color: white;
+}
+
+.btn-outline-azul {
+  color: var(--azul);
+  border-color: var(--azul);
+}
+
+.btn-outline-azul:hover {
+  background-color: var(--azul);
+  border-color: var(--azul);
   color: white;
 }
 
@@ -142,12 +249,13 @@
 .section-title::after {
   content: '';
   display: block;
-  width: 60px;
-  height: 4px;
-  background: var(--naranja);
-  margin-top: 10px;
-  border-radius: 2px;
+  width: 0;
+  height: 0;
+  background: transparent;
+  margin-top: 0;
+  border-radius: 0;
 }
+
 
 .step-card {
   text-align: center;
@@ -253,14 +361,113 @@
 
 .admin-sidebar {
   min-height: calc(100vh - 56px);
-  background: #f8f9fa;
+  background: linear-gradient(180deg, rgba(0,168,89,0.03) 0%, rgba(0,168,89,0.05) 100%);
+  border-right: 3px solid var(--verde);
+  padding-right: 1rem;
+}
+
+.admin-sidebar h5 {
+  color: var(--verde);
+  border-bottom: 2px solid var(--verde);
+  padding-bottom: 0.75rem;
+}
+
+.admin-sidebar .nav-link {
+  color: #333;
+  border-left: 3px solid transparent;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+  padding-left: 1rem;
+}
+
+.admin-sidebar .nav-link:hover {
+  background: rgba(0,168,89,0.1);
+  border-left-color: var(--verde);
+  color: var(--verde);
+}
+
+.admin-sidebar .nav-link.active,
+.admin-sidebar .nav-link.active:hover {
+  background: rgba(0,168,89,0.15);
+  border-left-color: var(--verde);
+  color: var(--verde);
+  font-weight: 600;
+}
+
+.instructor-sidebar {
+  min-height: calc(100vh - 56px);
+  background: linear-gradient(180deg, rgba(0,168,89,0.03) 0%, rgba(0,168,89,0.05) 100%);
+  border-right: 3px solid var(--verde);
+  padding-right: 1rem;
+}
+
+.instructor-sidebar h5 {
+  color: var(--verde);
+  border-bottom: 2px solid var(--verde);
+  padding-bottom: 0.75rem;
+}
+
+.instructor-sidebar .nav-link {
+  color: #333;
+  border-left: 3px solid transparent;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+  padding-left: 1rem;
+}
+
+.instructor-sidebar .nav-link:hover {
+  background: rgba(0,168,89,0.1);
+  border-left-color: var(--verde);
+  color: var(--verde);
+}
+
+.instructor-sidebar .nav-link.active,
+.instructor-sidebar .nav-link.active:hover {
+  background: rgba(0,168,89,0.15);
+  border-left-color: var(--verde);
+  color: var(--verde);
+  font-weight: 600;
+}
+
+.bg-light-verde {
+  background-color: rgba(0,168,89,0.08) !important;
+  border-left: 4px solid var(--verde);
+}
+
+.bg-light-azul {
+  background-color: rgba(0,150,199,0.08) !important;
+  border-left: 4px solid var(--azul);
+}
+
+.bg-light-naranja {
+  background-color: rgba(0,168,89,0.08) !important;
+  border-left: 4px solid var(--naranja);
+}
+
+.btn-outline-verde {
+  color: var(--verde);
+  border-color: var(--verde);
+}
+
+.btn-outline-verde:hover {
+  background-color: var(--verde);
+  border-color: var(--verde);
+  color: white;
 }
 
 @media (max-width: 768px) {
   .hero-section h1 {
     font-size: 2rem;
   }
+  .hero-robot-icon {
+    width: 200px;
+    height: 200px;
+  }
   .stat-number {
     font-size: 1.6rem;
+  }
+  .instructor-sidebar {
+    border-right: none;
+    border-bottom: 3px solid var(--verde);
   }
 }
