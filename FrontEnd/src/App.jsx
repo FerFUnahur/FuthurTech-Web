@@ -68,7 +68,7 @@ function App() {
               <Route path="/registro" element={<Register />} />
               <Route path="/productos" element={<ProductList />} />
               <Route path="/productos/:id" element={<ProductDetail />} />
-              <Route path="/carrito" element={<Cart />} />
+              <Route path="/carrito" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
               <Route path="/cursos" element={<CourseList />} />
               <Route path="/cursos/:id" element={<CourseDetail />} />
               <Route path="/cursos/:courseId/leccion/:lessonId" element={<ProtectedRoute><LessonView /></ProtectedRoute>} />
