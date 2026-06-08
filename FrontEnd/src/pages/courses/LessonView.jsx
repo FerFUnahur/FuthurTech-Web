@@ -38,6 +38,12 @@ function LessonView() {
 
   useEffect(() => { loadData() }, [courseId, lessonId])
 
+  useEffect(() => {
+    if (course && lesson) {
+      api.put(`/courses/${courseId}/last-lesson`, { lessonId: Number(lessonId) }).catch(() => {})
+    }
+  }, [courseId, lessonId, course, lesson])
+
   const markComplete = async () => {
     try {
       await api.post(`/lessons/${lessonId}/progress`)

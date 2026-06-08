@@ -105,7 +105,7 @@ function Dashboard() {
                   </div>
                   <Button
                     as={Link}
-                    to={`/cursos/${en.courseId}/leccion/${en.Course?.Modules?.[0]?.Lessons?.[0]?.id}`}
+                    to={`/cursos/${en.courseId}/leccion/${en.lastLessonId || en.Course?.Modules?.[0]?.Lessons?.[0]?.id}`}
                     size="sm"
                     variant={en.completed ? 'outline-success' : 'outline-primary'}
                   >
