@@ -1,12 +1,29 @@
 const { Op } = require('sequelize');
 const { Product, Category } = require('../models');
 
+// funcion para normalizar las palabras 
+function normalizeText(text) {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
 exports.getAll = async (req, res) => {
   const { search, categoryId } = req.query;
   const where = {};
-  if (search) where.name = { [Op.like]: `%${search}%` };
-  if (categoryId) where.categoryId = categoryId;
-  const products = await Product.findAll({ where, include: [Category] });
+  if (categoryId) {where.categoryId = categoryId;}
+  let products = await Product.findAll({
+    where,
+    include: [Category]
+  });
+
+  if (search) {
+    const term = normalizeText(search);
+    products = products.filter(product =>
+      normalizeText(product.name).includes(term)
+    );
+  }
   res.json(products);
 };
 
