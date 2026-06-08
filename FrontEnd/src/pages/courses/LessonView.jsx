@@ -95,8 +95,10 @@ function LessonView() {
                     onClick={() => navigate(`/cursos/${courseId}/leccion/${l.id}`)}
                     style={{ cursor: 'pointer' }}
                   >
-                    <i className={`bi ${progress[l.id] ? 'bi-check-circle-fill text-verde' : l.id === Number(lessonId) ? 'bi-play-circle-fill text-verde' : 'bi-play-circle'} me-2`}></i>
-                    {l.title}
+                    <div className="d-flex justify-content-between w-100 align-items-center">
+                      <span><i className={`bi ${progress[l.id] ? 'bi-check-circle-fill text-verde' : l.id === Number(lessonId) ? 'bi-play-circle-fill text-verde' : 'bi-play-circle'} me-2`}></i>{l.title}</span>
+                      <small className="text-muted ms-2 text-nowrap">{l.duration} min</small>
+                    </div>
                   </ListGroup.Item>
                 ))}
               </ListGroup>
