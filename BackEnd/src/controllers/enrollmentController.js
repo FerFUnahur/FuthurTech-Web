@@ -36,6 +36,15 @@ exports.getProgress = async (req, res) => {
   res.json({ enrollment, lessonProgress });
 };
 
+exports.updateLastLesson = async (req, res) => {
+  const enrollment = await Enrollment.findOne({
+    where: { userId: req.user.id, courseId: req.params.courseId }
+  });
+  if (!enrollment) return res.status(404).json({ error: 'Inscripción no encontrada' });
+  await enrollment.update({ lastLessonId: req.body.lessonId });
+  res.json(enrollment);
+};
+
 exports.markLesson = async (req, res) => {
   const lesson = await Lesson.findByPk(req.params.lessonId);
   if (!lesson) return res.status(404).json({ error: 'Lección no encontrada' });
