@@ -8,6 +8,7 @@ function InstructorCourses() {
   const [courses, setCourses] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [editingCourse, setEditingCourse] = useState(null)
+  const [saving, setSaving] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -42,6 +43,7 @@ function InstructorCourses() {
 
   const handleSave = async (e) => {
     e.preventDefault()
+    setSaving(true)
     try {
       if (editingCourse) {
         await api.put(`/courses/${editingCourse.id}`, formData)
@@ -55,6 +57,8 @@ function InstructorCourses() {
       setFormData({ title: '', description: '', accessCode: '', status: 'publicado' })
     } catch (error) {
       console.error('Error al guardar:', error)
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -194,8 +198,8 @@ function InstructorCourses() {
                     <option value="borrador">Borrador</option>
                   </Form.Select>
                 </Form.Group>
-                <Button variant="success" type="submit" className="w-100">
-                  Guardar Curso
+                <Button variant="success" type="submit" className="w-100" disabled={saving}>
+                  {saving ? 'Guardando...' : 'Guardar Curso'}
                 </Button>
               </Form>
             </Modal.Body>
