@@ -11,7 +11,7 @@ function InstructorCourses() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    price: 0,
+    accessCode: '',
     status: 'publicado'
   })
 
@@ -34,7 +34,7 @@ function InstructorCourses() {
     setFormData({
       title: course.title,
       description: course.description,
-      price: course.price,
+      accessCode: course.accessCode,
       status: course.status
     })
     setShowModal(true)
@@ -52,10 +52,19 @@ function InstructorCourses() {
       }
       setShowModal(false)
       setEditingCourse(null)
-      setFormData({ title: '', description: '', price: 0, status: 'publicado' })
+      setFormData({ title: '', description: '', accessCode: '', status: 'publicado' })
     } catch (error) {
       console.error('Error al guardar:', error)
     }
+  }
+
+  const generateCode = () => {
+    const slug = formData.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '') || 'curso'
+    const rand = Math.random().toString(36).substring(2, 6).toUpperCase()
+    setFormData({ ...formData, accessCode: `${slug}-${rand}` })
   }
 
   const handleDelete = async (id) => {
@@ -77,7 +86,7 @@ function InstructorCourses() {
               variant="success"
               onClick={() => {
                 setEditingCourse(null)
-                setFormData({ title: '', description: '', price: 0, status: 'publicado' })
+                setFormData({ title: '', description: '', accessCode: '', status: 'publicado' })
                 setShowModal(true)
               }}
             >
@@ -96,7 +105,7 @@ function InstructorCourses() {
                 <tr>
                   <th>Título</th>
                   <th>Estudiantes</th>
-                  <th>Precio</th>
+                  <th>Código de acceso</th>
                   <th>Estado</th>
                   <th>Acciones</th>
                 </tr>
@@ -106,7 +115,7 @@ function InstructorCourses() {
                   <tr key={course.id}>
                     <td className="fw-bold">{course.title}</td>
                     <td>-</td>
-                    <td>${course.price}</td>
+                    <td><code>{course.accessCode}</code></td>
                     <td>
                       <Badge bg={course.status === 'publicado' ? 'success' : 'warning'}>
                         {course.status}
@@ -161,14 +170,19 @@ function InstructorCourses() {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Precio ($)</Form.Label>
-                  <Form.Control
-                    type="number"
-                    min="0"
-                    step="100"
-                    value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
-                  />
+                  <Form.Label>Código de acceso *</Form.Label>
+                  <div className="d-flex gap-2">
+                    <Form.Control
+                      type="text"
+                      value={formData.accessCode}
+                      onChange={(e) => setFormData({ ...formData, accessCode: e.target.value })}
+                      required
+                      placeholder="Ej: ROBOTICA-001"
+                    />
+                    <Button variant="outline-secondary" onClick={generateCode} title="Generar código automático">
+                      <i className="bi bi-arrow-repeat"></i>
+                    </Button>
+                  </div>
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Estado</Form.Label>
