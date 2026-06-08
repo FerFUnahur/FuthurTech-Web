@@ -31,21 +31,14 @@ function InstructorStudents() {
     const fetchStudents = async () => {
       if (!selectedCourse) return
       try {
-        const enrollmentsRes = await api.get('/enrollments')
-        const courseEnrollments = enrollmentsRes.data.filter(e => e.courseId === selectedCourse)
-
-        const usersRes = await api.get('/users')
-        // Usamos un Map para búsquedas instantáneas por ID
-        const usersMap = new Map(usersRes.data.map(u => [u.id, u]))
-
-        const studentsList = courseEnrollments.map(enrollment => {
-          const student = usersMap.get(enrollment.userId)
-          return {
-            ...enrollment,
-            studentName: student?.name,
-            studentEmail: student?.email
-          }
-        })
+        const studentsRes = await api.get(`/courses/${selectedCourse}/students`)
+        
+        const studentsList = studentsRes.data.map(enrollment => ({
+          ...enrollment,
+          studentName: enrollment.User?.name,
+          studentEmail: enrollment.User?.email,
+          userId: enrollment.User?.id
+        }))
 
         setStudents(studentsList)
       } catch (error) {
@@ -105,8 +98,8 @@ function InstructorStudents() {
                       <Card className="text-center border-0 shadow-sm">
                         <Card.Body>
                           <i className="bi bi-calendar-check text-naranja fs-2 d-block mb-2"></i>
-                          <h4 className="fw-bold">{students.filter(s => s.status === 'activo').length}</h4>
-                          <p className="text-muted small mb-0">Activos</p>
+                          <h4 className="fw-bold">{students.filter(s => !s.completed).length}</h4>
+                          <p className="text-muted small mb-0">En progreso</p>
                         </Card.Body>
                       </Card>
                     </Col>
@@ -128,8 +121,8 @@ function InstructorStudents() {
                           <td>{student.studentEmail}</td>
                           <td>{new Date(student.createdAt).toLocaleDateString('es-AR')}</td>
                           <td>
-                            <Badge bg={student.status === 'activo' ? 'success' : 'secondary'}>
-                              {student.status}
+                            <Badge bg={student.completed ? 'success' : 'warning'}>
+                              {student.completed ? 'Completado' : 'En progreso'}
                             </Badge>
                           </td>
                         </tr>

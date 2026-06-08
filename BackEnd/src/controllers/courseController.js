@@ -6,6 +6,7 @@ exports.getAll = async (req, res) => {
   if (req.query.search) where.title = { [require('sequelize').Op.like]: `%${req.query.search}%` };
   const courses = await Course.findAll({
     where: req.user?.role === 'admin' ? where : { ...where, status: 'publicado' },
+    attributes: { include: ['instructorId'] },
     include: [{ model: User, as: 'instructor', attributes: ['id', 'name'] }, Category],
   });
   res.json(courses);

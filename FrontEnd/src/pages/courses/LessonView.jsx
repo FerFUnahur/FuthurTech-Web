@@ -63,8 +63,8 @@ function LessonView() {
         <Col lg={3} className="lesson-sidebar mb-4 mb-lg-0">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h5 className="fw-bold mb-0">{course.title}</h5>
-            <Button variant="outline-secondary" size="sm" onClick={() => navigate('/dashboard')}>
-              <i className="bi bi-box-arrow-left"></i>
+            <Button variant="outline-verde" size="sm" onClick={() => navigate('/dashboard')}>
+              <i className="bi bi-arrow-left me-1"></i>Volver al Panel
             </Button>
           </div>
           <div className="mb-3">
@@ -100,7 +100,7 @@ function LessonView() {
         <Col lg={9}>
           <h3 className="fw-bold mb-3">{lesson.title}</h3>
           {lesson.videoUrl && (
-            <div className="ratio ratio-16x9 mb-4">
+            <div className="ratio ratio-16x9 mb-4" style={{ maxWidth: '700px' }}>
               <iframe src={lesson.videoUrl} title={lesson.title} allowFullScreen></iframe>
             </div>
           )}

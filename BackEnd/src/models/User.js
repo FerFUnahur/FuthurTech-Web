@@ -13,6 +13,7 @@ const User = sequelize.define('User', {
   birthDate: { type: DataTypes.DATEONLY, allowNull: true },
   city: { type: DataTypes.STRING, defaultValue: '' },
   province: { type: DataTypes.STRING, defaultValue: '' },
+  active: { type: DataTypes.BOOLEAN, defaultValue: true },
 }, { timestamps: true });
 
 module.exports = User;
