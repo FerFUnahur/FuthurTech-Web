@@ -1,7 +1,14 @@
-const { Category } = require('../models');
+const { Category, Course } = require('../models');
 
 exports.getAll = async (req, res) => {
-  const categories = await Category.findAll();
+  const include = [];
+  if (req.query.scope === 'courses') {
+    include.push({ model: Course, attributes: [], required: true });
+  }
+  const categories = await Category.findAll({
+    include: include.length > 0 ? include : undefined,
+    distinct: true,
+  });
   res.json(categories);
 };
 

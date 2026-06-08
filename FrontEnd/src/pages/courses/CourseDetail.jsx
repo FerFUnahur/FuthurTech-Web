@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Container, Row, Col, Button, Spinner, Alert, Accordion, Badge, ListGroup } from 'react-bootstrap'
+import { Container, Row, Col, Button, Spinner, Alert, Accordion, Badge, ListGroup, Toast, ToastContainer, Form } from 'react-bootstrap'
 import api from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 
@@ -11,6 +11,9 @@ function CourseDetail() {
   const [enrolled, setEnrolled] = useState(false)
   const [enrolling, setEnrolling] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [accessCode, setAccessCode] = useState('')
+  const [accessError, setAccessError] = useState('')
+  const [showToast, setShowToast] = useState(false)
 
   useEffect(() => {
     api.get(`/courses/${id}`).then(res => setCourse(res.data)).catch(() => {}).finally(() => setLoading(false))
@@ -24,11 +27,13 @@ function CourseDetail() {
 
   const handleEnroll = async () => {
     setEnrolling(true)
+    setAccessError('')
     try {
-      const res = await api.post(`/courses/${id}/enroll`)
+      const res = await api.post(`/courses/${id}/enroll`, { accessCode })
       setEnrolled(res.data)
+      setShowToast(true)
     } catch (err) {
-      alert(err.response?.data?.error || 'Error al inscribirse')
+      setAccessError(err.response?.data?.error || 'Error al inscribirse')
     } finally {
       setEnrolling(false)
     }
@@ -38,6 +43,9 @@ function CourseDetail() {
   if (!course) return <Container className="py-5"><Alert variant="warning">Curso no encontrado</Alert></Container>
 
   const totalLessons = course.Modules?.reduce((sum, m) => sum + (m.Lessons?.length || 0), 0) || 0
+  const totalMinutes = course.Modules?.reduce((sum, m) =>
+    sum + (m.Lessons?.reduce((s, l) => s + (l.duration || 0), 0) || 0), 0) || 0
+  const totalHours = totalMinutes >= 60 ? `${Math.floor(totalMinutes / 60)}h ${totalMinutes % 60}min` : `${totalMinutes}min`
 
   return (
     <Container className="py-5">
@@ -50,8 +58,9 @@ function CourseDetail() {
           <h2 className="fw-bold">{course.title}</h2>
           <div className="d-flex gap-3 mb-3">
             <Badge bg="success">{course.Category?.name || 'General'}</Badge>
-            {course.price === 0 ? <Badge bg="warning" text="dark">Gratis</Badge> : <Badge bg="info">${course.price.toLocaleString()}</Badge>}
+            <Badge bg="secondary">Acceso por código</Badge>
             <span className="text-muted small"><i className="bi bi-file-text me-1"></i>{totalLessons} lecciones</span>
+            <span className="text-muted small"><i className="bi bi-clock me-1"></i>{totalHours}</span>
           </div>
           <p className="text-muted">{course.description}</p>
           <p className="small text-muted"><i className="bi bi-person me-1"></i>Instructor: {course.instructor?.name || 'No asignado'}</p>
@@ -106,20 +115,23 @@ function CourseDetail() {
                   </Alert>
                 ) : (
                   <>
-                    <h4 className="fw-bold text-azul mb-3">
-                      {course.price === 0 ? 'Gratis' : `$${course.price.toLocaleString()}`}
-                    </h4>
+                    {accessError && <Alert variant="danger" className="py-2 small">{accessError}</Alert>}
+                    <Form.Control
+                      type="text"
+                      placeholder="Ingresá el código de acceso"
+                      value={accessCode}
+                      onChange={e => setAccessCode(e.target.value)}
+                      className="mb-2"
+                    />
                     <Button className="btn-verde w-100" onClick={handleEnroll} disabled={enrolling}>
-                      {enrolling ? 'Inscribiendo...' : 'Inscribirme ahora'}
+                      {enrolling ? 'Validando...' : 'Inscribirme'}
                     </Button>
                   </>
                 )}
               </>
             ) : (
               <>
-                <h4 className="fw-bold text-azul mb-3">
-                  {course.price === 0 ? 'Gratis' : `$${course.price.toLocaleString()}`}
-                </h4>
+                <p className="text-muted small mb-3">Necesitás una cuenta y un código de acceso para inscribirte a este curso.</p>
                 <Button as={Link} to="/login" variant="outline-primary" className="w-100">
                   Iniciá sesión para inscribirte
                 </Button>
@@ -128,6 +140,14 @@ function CourseDetail() {
           </div>
         </Col>
       </Row>
+
+      <ToastContainer position="top-center" className="p-3" style={{ zIndex: 9999 }}>
+        <Toast onClose={() => setShowToast(false)} show={showToast} delay={3000} autohide bg="success">
+          <Toast.Body className="text-white fw-semibold">
+            <i className="bi bi-check-circle me-2"></i>¡Inscripción exitosa! Ya podés acceder al curso.
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
     </Container>
   )
 }

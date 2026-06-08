@@ -8,7 +8,8 @@ function AdminCourses() {
   const [loading, setLoading] = useState(true)
   const [show, setShow] = useState(false)
   const [editCourse, setEditCourse] = useState(null)
-  const [form, setForm] = useState({ title: '', description: '', price: 0, categoryId: '', status: 'borrador' })
+  const [form, setForm] = useState({ title: '', description: '', accessCode: '', categoryId: '', status: 'borrador' })
+  const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
   const loadData = () => {
@@ -25,11 +26,12 @@ function AdminCourses() {
 
   const openEdit = (course) => {
     setEditCourse(course)
-    setForm({ title: course.title, description: course.description, price: course.price, categoryId: course.categoryId || '', status: course.status })
+    setForm({ title: course.title, description: course.description, accessCode: course.accessCode, categoryId: course.categoryId || '', status: course.status })
     setShow(true)
   }
 
   const handleSave = async () => {
+    setSaving(true)
     try {
       const data = { ...form, categoryId: form.categoryId ? Number(form.categoryId) : null }
       if (editCourse) {
@@ -41,6 +43,8 @@ function AdminCourses() {
       loadData()
     } catch (err) {
       setError(err.response?.data?.error || 'Error al guardar')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -56,7 +60,7 @@ function AdminCourses() {
     <div>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h4 className="fw-bold mb-0"><i className="bi bi-book me-2"></i>Gestionar Cursos</h4>
-        <Button className="btn-verde" onClick={() => { setEditCourse(null); setForm({ title: '', description: '', price: 0, categoryId: '', status: 'borrador' }); setShow(true) }}>
+        <Button className="btn-verde" onClick={() => { setEditCourse(null); setForm({ title: '', description: '', accessCode: '', categoryId: '', status: 'borrador' }); setShow(true) }}>
           <i className="bi bi-plus-lg me-2"></i>Nuevo Curso
         </Button>
       </div>
@@ -65,7 +69,7 @@ function AdminCourses() {
           <tr>
             <th>ID</th>
             <th>Título</th>
-            <th>Precio</th>
+            <th>Código</th>
             <th>Estado</th>
             <th>Categoría</th>
             <th>Acciones</th>
@@ -76,7 +80,7 @@ function AdminCourses() {
             <tr key={c.id}>
               <td>{c.id}</td>
               <td>{c.title}</td>
-              <td>{c.price === 0 ? 'Gratis' : `$${c.price.toLocaleString()}`}</td>
+              <td><code>{c.accessCode || '-'}</code></td>
               <td><Badge bg={c.status === 'publicado' ? 'success' : 'secondary'}>{c.status}</Badge></td>
               <td>{c.Category?.name || '-'}</td>
               <td>
@@ -102,8 +106,17 @@ function AdminCourses() {
               <Form.Control as="textarea" rows={3} value={form.description} onChange={e => setForm({...form, description: e.target.value})} />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Precio ($)</Form.Label>
-              <Form.Control type="number" value={form.price} onChange={e => setForm({...form, price: Number(e.target.value)})} />
+              <Form.Label>Código de acceso *</Form.Label>
+              <div className="d-flex gap-2">
+                <Form.Control type="text" value={form.accessCode} onChange={e => setForm({...form, accessCode: e.target.value})} required placeholder="Ej: ROBOTICA-001" />
+                <Button variant="outline-secondary" onClick={() => {
+                  const slug = form.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'curso'
+                  const rand = Math.random().toString(36).substring(2, 6).toUpperCase()
+                  setForm({...form, accessCode: `${slug}-${rand}`})
+                }} title="Generar código automático">
+                  <i className="bi bi-arrow-repeat"></i>
+                </Button>
+              </div>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Categoría</Form.Label>
@@ -123,7 +136,7 @@ function AdminCourses() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>Cancelar</Button>
-          <Button className="btn-verde" onClick={handleSave}>Guardar</Button>
+          <Button className="btn-verde" onClick={handleSave} disabled={saving}>{saving ? 'Guardando...' : 'Guardar'}</Button>
         </Modal.Footer>
       </Modal>
     </div>

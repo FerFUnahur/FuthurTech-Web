@@ -11,7 +11,7 @@ function CourseList() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/categories').then(res => setCategories(res.data)).catch(() => {})
+    api.get('/courses/categories').then(res => setCategories(res.data)).catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -53,7 +53,7 @@ function CourseList() {
                 <Card.Body className="d-flex flex-column">
                   <div className="d-flex gap-2 mb-2">
                     <Badge bg="success">{c.Category?.name || 'General'}</Badge>
-                    {c.price === 0 ? <Badge bg="warning" text="dark">Gratis</Badge> : <Badge bg="info">${c.price.toLocaleString()}</Badge>}
+                    <Badge bg="secondary">Acceso por código</Badge>
                   </div>
                   <Card.Title className="fw-bold">{c.title}</Card.Title>
                   <Card.Text className="text-muted small flex-grow-1">{c.description.slice(0, 100)}...</Card.Text>

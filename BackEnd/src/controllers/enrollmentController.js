@@ -7,6 +7,9 @@ exports.enroll = async (req, res) => {
   }
   const course = await Course.findByPk(req.params.courseId);
   if (!course) return res.status(404).json({ error: 'Curso no encontrado' });
+  if (req.body.accessCode !== course.accessCode) {
+    return res.status(403).json({ error: 'Código de acceso inválido' });
+  }
   const exists = await Enrollment.findOne({ where: { userId: req.user.id, courseId: req.params.courseId } });
   if (exists) return res.status(400).json({ error: 'Ya estás inscrito en este curso' });
   const enrollment = await Enrollment.create({ userId: req.user.id, courseId: req.params.courseId });
@@ -31,6 +34,15 @@ exports.getProgress = async (req, res) => {
     where: { userId: req.user.id, lessonId: enrollment.Course.Modules.flatMap(m => m.Lessons).map(l => l.id) },
   });
   res.json({ enrollment, lessonProgress });
+};
+
+exports.updateLastLesson = async (req, res) => {
+  const enrollment = await Enrollment.findOne({
+    where: { userId: req.user.id, courseId: req.params.courseId }
+  });
+  if (!enrollment) return res.status(404).json({ error: 'Inscripción no encontrada' });
+  await enrollment.update({ lastLessonId: req.body.lessonId });
+  res.json(enrollment);
 };
 
 exports.markLesson = async (req, res) => {

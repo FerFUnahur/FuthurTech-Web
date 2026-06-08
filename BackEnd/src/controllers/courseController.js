@@ -1,13 +1,26 @@
+const { Op } = require('sequelize');
 const { Course, Module, Lesson, Category, User, Enrollment } = require('../models');
+
+function normalizeText(text) {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
 
 exports.getAll = async (req, res) => {
   const where = {};
   if (req.query.categoryId) where.categoryId = req.query.categoryId;
-  if (req.query.search) where.title = { [require('sequelize').Op.like]: `%${req.query.search}%` };
-  const courses = await Course.findAll({
+  let courses = await Course.findAll({
     where: req.user?.role === 'admin' ? where : { ...where, status: 'publicado' },
     include: [{ model: User, as: 'instructor', attributes: ['id', 'name'] }, Category],
   });
+  if (req.query.search) {
+    const term = normalizeText(req.query.search);
+    courses = courses.filter(course =>
+      normalizeText(course.title).includes(term)
+    );
+  }
   res.json(courses);
 };
 
@@ -43,6 +56,14 @@ exports.remove = async (req, res) => {
   if (!course) return res.status(404).json({ error: 'Curso no encontrado' });
   await course.destroy();
   res.json({ message: 'Curso eliminado' });
+};
+
+exports.getCategories = async (req, res) => {
+  const categories = await Category.findAll({
+    include: [{ model: Course, attributes: [], required: true }],
+    distinct: true,
+  });
+  res.json(categories);
 };
 
 exports.getStudents = async (req, res) => {

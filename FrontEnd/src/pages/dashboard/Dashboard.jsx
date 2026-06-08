@@ -79,7 +79,7 @@ function Dashboard() {
         </div>
       ) : (
         <Row className="g-3">
-          {enrollments.map(en => (
+          {[...enrollments].sort((a, b) => a.completed - b.completed).map(en => (
             <Col md={6} key={en.id}>
               <Card className="border-0 shadow-sm">
                 <Card.Body>
@@ -105,7 +105,7 @@ function Dashboard() {
                   </div>
                   <Button
                     as={Link}
-                    to={`/cursos/${en.courseId}/leccion/${en.Course?.Modules?.[0]?.Lessons?.[0]?.id}`}
+                    to={`/cursos/${en.courseId}/leccion/${en.lastLessonId || en.Course?.Modules?.[0]?.Lessons?.[0]?.id}`}
                     size="sm"
                     variant={en.completed ? 'outline-success' : 'outline-primary'}
                   >

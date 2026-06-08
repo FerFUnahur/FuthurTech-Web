@@ -7,6 +7,7 @@ const Enrollment = sequelize.define('Enrollment', {
   courseId: { type: DataTypes.INTEGER, allowNull: false },
   progress: { type: DataTypes.INTEGER, defaultValue: 0 },
   completed: { type: DataTypes.BOOLEAN, defaultValue: false },
+  lastLessonId: { type: DataTypes.INTEGER, allowNull: true, defaultValue: null },
 }, { timestamps: true });
 
 module.exports = Enrollment;
