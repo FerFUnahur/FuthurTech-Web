@@ -1,13 +1,26 @@
+const { Op } = require('sequelize');
 const { Course, Module, Lesson, Category, User, Enrollment } = require('../models');
+
+function normalizeText(text) {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
 
 exports.getAll = async (req, res) => {
   const where = {};
   if (req.query.categoryId) where.categoryId = req.query.categoryId;
-  if (req.query.search) where.title = { [require('sequelize').Op.like]: `%${req.query.search}%` };
-  const courses = await Course.findAll({
+  let courses = await Course.findAll({
     where: req.user?.role === 'admin' ? where : { ...where, status: 'publicado' },
     include: [{ model: User, as: 'instructor', attributes: ['id', 'name'] }, Category],
   });
+  if (req.query.search) {
+    const term = normalizeText(req.query.search);
+    courses = courses.filter(course =>
+      normalizeText(course.title).includes(term)
+    );
+  }
   res.json(courses);
 };
 
