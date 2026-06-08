@@ -79,7 +79,7 @@ function Dashboard() {
         </div>
       ) : (
         <Row className="g-3">
-          {enrollments.map(en => (
+          {[...enrollments].sort((a, b) => a.completed - b.completed).map(en => (
             <Col md={6} key={en.id}>
               <Card className="border-0 shadow-sm">
                 <Card.Body>
