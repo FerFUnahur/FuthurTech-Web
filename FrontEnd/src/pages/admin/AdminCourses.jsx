@@ -9,6 +9,7 @@ function AdminCourses() {
   const [show, setShow] = useState(false)
   const [editCourse, setEditCourse] = useState(null)
   const [form, setForm] = useState({ title: '', description: '', accessCode: '', categoryId: '', status: 'borrador' })
+  const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
   const loadData = () => {
@@ -30,6 +31,7 @@ function AdminCourses() {
   }
 
   const handleSave = async () => {
+    setSaving(true)
     try {
       const data = { ...form, categoryId: form.categoryId ? Number(form.categoryId) : null }
       if (editCourse) {
@@ -41,6 +43,8 @@ function AdminCourses() {
       loadData()
     } catch (err) {
       setError(err.response?.data?.error || 'Error al guardar')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -132,7 +136,7 @@ function AdminCourses() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>Cancelar</Button>
-          <Button className="btn-verde" onClick={handleSave}>Guardar</Button>
+          <Button className="btn-verde" onClick={handleSave} disabled={saving}>{saving ? 'Guardando...' : 'Guardar'}</Button>
         </Modal.Footer>
       </Modal>
     </div>
