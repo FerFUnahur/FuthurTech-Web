@@ -11,7 +11,7 @@ function CourseList() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/categories?scope=courses').then(res => setCategories(res.data)).catch(() => {})
+    api.get('/courses/categories').then(res => setCategories(res.data)).catch(() => {})
   }, [])
 
   useEffect(() => {

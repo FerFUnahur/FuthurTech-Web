@@ -58,6 +58,14 @@ exports.remove = async (req, res) => {
   res.json({ message: 'Curso eliminado' });
 };
 
+exports.getCategories = async (req, res) => {
+  const categories = await Category.findAll({
+    include: [{ model: Course, attributes: [], required: true }],
+    distinct: true,
+  });
+  res.json(categories);
+};
+
 exports.getStudents = async (req, res) => {
   const course = await Course.findByPk(req.params.id);
   if (!course) return res.status(404).json({ error: 'Curso no encontrado' });
