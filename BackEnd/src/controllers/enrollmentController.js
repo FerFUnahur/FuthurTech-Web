@@ -7,6 +7,9 @@ exports.enroll = async (req, res) => {
   }
   const course = await Course.findByPk(req.params.courseId);
   if (!course) return res.status(404).json({ error: 'Curso no encontrado' });
+  if (req.body.accessCode !== course.accessCode) {
+    return res.status(403).json({ error: 'Código de acceso inválido' });
+  }
   const exists = await Enrollment.findOne({ where: { userId: req.user.id, courseId: req.params.courseId } });
   if (exists) return res.status(400).json({ error: 'Ya estás inscrito en este curso' });
   const enrollment = await Enrollment.create({ userId: req.user.id, courseId: req.params.courseId });
