@@ -28,9 +28,9 @@ const seed = async () => {
   const catCourseRobotica = await Category.create({ name: 'Robótica', description: 'Cursos de robótica educativa', image: '' });
   const catCourseProg = await Category.create({ name: 'Programación', description: 'Cursos de programación', image: '' });
 
-  const cursoRobotica = await Course.create({ title: 'Robótica Inicial', description: 'Aprendé los fundamentos de la robótica desde cero. Incluye conceptos de electrónica, programación y mecánica básica.', image: '', instructorId: instructor.id, categoryId: catCourseRobotica.id, price: 0, status: 'publicado' });
-  const cursoAvanzado = await Course.create({ title: 'Robótica Avanzado', description: 'Profundizá en robótica con proyectos complejos: brazos robóticos, visión artificial y sistemas autónomos.', image: '', instructorId: instructor.id, categoryId: catCourseRobotica.id, price: 15000, status: 'publicado' });
-  const cursoProg = await Course.create({ title: 'Programación para Robots', description: 'Aprendé a programar robots usando Python y C++. Desde scripts simples hasta algoritmos de navegación.', image: '', instructorId: instructor.id, categoryId: catCourseProg.id, price: 0, status: 'publicado' });
+  const cursoRobotica = await Course.create({ title: 'Robótica Inicial', description: 'Aprendé los fundamentos de la robótica desde cero. Incluye conceptos de electrónica, programación y mecánica básica.', image: '', instructorId: instructor.id, categoryId: catCourseRobotica.id, accessCode: 'ROBOTICA-001', status: 'publicado' });
+  const cursoAvanzado = await Course.create({ title: 'Robótica Avanzado', description: 'Profundizá en robótica con proyectos complejos: brazos robóticos, visión artificial y sistemas autónomos.', image: '', instructorId: instructor.id, categoryId: catCourseRobotica.id, accessCode: 'ROBOTICA-002', status: 'publicado' });
+  const cursoProg = await Course.create({ title: 'Programación para Robots', description: 'Aprendé a programar robots usando Python y C++. Desde scripts simples hasta algoritmos de navegación.', image: '', instructorId: instructor.id, categoryId: catCourseProg.id, accessCode: 'PROGRAMACION-001', status: 'publicado' });
 
   const m1 = await Module.create({ courseId: cursoRobotica.id, title: 'Introducción a la Robótica', description: 'Conceptos fundamentales', order: 1 });
   const m2 = await Module.create({ courseId: cursoRobotica.id, title: 'Electrónica Básica', description: 'Componentes electrónicos', order: 2 });
