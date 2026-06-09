@@ -13,6 +13,7 @@ exports.getAll = async (req, res) => {
   if (req.query.categoryId) where.categoryId = req.query.categoryId;
   let courses = await Course.findAll({
     where: req.user?.role === 'admin' ? where : { ...where, status: 'publicado' },
+    attributes: { include: ['instructorId'] },
     include: [{ model: User, as: 'instructor', attributes: ['id', 'name'] }, Category],
   });
   if (req.query.search) {

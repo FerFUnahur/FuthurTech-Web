@@ -19,7 +19,7 @@ export default function AdminUsers() {
 
   const openEdit = (user) => {
     setEditUser(user)
-    setForm({ role: user.role })
+    setForm({ role: user.role, active: user.active })
     setShow(true)
   }
 
@@ -48,29 +48,31 @@ export default function AdminUsers() {
       <h4 className="fw-bold mb-4"><i className="bi bi-people me-2"></i>Gestionar Usuarios</h4>
 
       <Table responsive striped hover>
-        <thead className="table-dark">
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Rol</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(u => (
-            <tr key={u.id}>
-              <td>{u.id}</td>
-              <td>{u.name}</td>
-              <td>{u.email}</td>
-              <td><Badge bg={u.role === 'admin' ? 'danger' : u.role === 'instructor' ? 'warning' : 'success'}>{u.role}</Badge></td>
-              <td>
-                <Button variant="outline-primary" size="sm" className="me-2" onClick={() => openEdit(u)}><i className="bi bi-pencil"></i></Button>
-                <Button variant="outline-danger" size="sm" onClick={() => handleDelete(u.id)}><i className="bi bi-trash"></i></Button>
-              </td>
+<thead className="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
             </tr>
-          ))}
-        </tbody>
+          </thead>
+          <tbody>
+            {users.map(u => (
+              <tr key={u.id}>
+                <td>{u.id}</td>
+                <td>{u.name}</td>
+                <td>{u.email}</td>
+                <td><Badge bg={u.role === 'admin' ? 'danger' : u.role === 'instructor' ? 'warning' : 'success'}>{u.role}</Badge></td>
+                <td><Badge bg={u.active ? 'success' : 'secondary'}>{u.active ? 'Activo' : 'Inactivo'}</Badge></td>
+                <td>
+                  <Button variant="outline-primary" size="sm" className="me-2" onClick={() => openEdit(u)}><i className="bi bi-pencil"></i></Button>
+                  <Button variant="outline-danger" size="sm" onClick={() => handleDelete(u.id)}><i className="bi bi-trash"></i></Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
       </Table>
 
       <Modal show={show} onHide={() => setShow(false)}>
@@ -79,7 +81,7 @@ export default function AdminUsers() {
           {error && <Alert variant="danger">{error}</Alert>}
           <p className="text-muted small mb-3">
             <i className="bi bi-info-circle me-1"></i>
-            Solo puedes cambiar el rol del usuario. Para editar nombre, email u otros datos, el usuario debe actualizar su propio perfil.
+            Solo puedes modificar rol y estado del usuario. Para editar nombre, email u otros datos, el usuario debe actualizar su propio perfil.
           </p>
           <Form>
             <Form.Group className="mb-3">
@@ -89,6 +91,15 @@ export default function AdminUsers() {
                 <option value="instructor">Instructor</option>
                 <option value="admin">Admin</option>
               </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Check 
+                type="switch"
+                id="active-switch"
+                label="Usuario activo"
+                checked={form.active}
+                onChange={e => setForm({...form, active: e.target.checked})}
+              />
             </Form.Group>
           </Form>
         </Modal.Body>

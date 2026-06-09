@@ -1,7 +1,12 @@
+import { useAuth } from '../../context/AuthContext'
 import { Link } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 
 function Home() {
+  const { user } = useAuth()
+  const isLoggedIn = !!user
+  const role = user?.role
+
   return (
     <>
       <section className="hero-section">
@@ -76,12 +81,32 @@ function Home() {
         <Container>
           <Row className="align-items-center">
             <Col lg={6} className="mb-4 mb-lg-0">
-              <h2 className="section-title">¿Listo para empezar?</h2>
-              <p className="fs-5 text-muted">Unite a FuthurTech y formá parte de la próxima generación de innovadores. Cursos, kits y una comunidad que te acompaña.</p>
-              <Button as={Link} to="/registro" size="lg" className="btn-verde fw-bold px-4">Comenzá Ahora</Button>
+              <h2 className="section-title">
+                {role === 'admin' ? 'Panel de Administración' : role === 'instructor' ? '¿Listo para enseñar?' : '¿Listo para empezar?'}
+              </h2>
+              <p className="fs-5 text-muted">
+                {role === 'admin'
+                  ? 'Gestiona usuarios, cursos y pedidos desde el panel de administración.'
+                  : role === 'instructor' 
+                  ? 'Gestiona tus cursos y seguimiento de estudiantes desde tu panel docente.'
+                  : 'Unite a FuthurTech y formá parte de la próxima generación de innovadores. Cursos, kits y una comunidad que te acompaña.'
+                }
+              </p>
+              <Button 
+                as={Link} 
+                to={
+                  !isLoggedIn ? '/registro' : 
+                  role === 'student' ? '/guia' : 
+                  role === 'instructor' ? '/instructor' :
+                  '/admin'
+                } 
+                size="lg" 
+                className="btn-verde fw-bold px-4">
+                {!isLoggedIn ? 'Comenzá Ahora' : role === 'student' ? 'Comenzá Ahora' : 'Ir a mi Panel'}
+              </Button>
             </Col>
             <Col lg={6} className="text-center">
-              <i className="bi bi-mortarboard-fill" style={{ fontSize: '8rem', color: 'var(--azul)', opacity: 0.2 }}></i>
+              <i className={role === 'admin' ? 'bi bi-gear-fill' : 'bi bi-mortarboard-fill'} style={{ fontSize: '8rem', color: 'var(--azul)', opacity: 0.2 }}></i>
             </Col>
           </Row>
         </Container>

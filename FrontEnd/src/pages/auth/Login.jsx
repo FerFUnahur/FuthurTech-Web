@@ -17,7 +17,7 @@ function Login() {
     } else if (user.role === 'instructor') {
       navigate('/instructor');
     } else {
-      navigate('/dashboard');
+      navigate('/guia');
     }
     return null;
   }
@@ -32,6 +32,8 @@ function Login() {
         navigate('/admin')
       } else if (userData.role === 'instructor') {
         navigate('/instructor')
+      } else if (userData.role === 'student') {
+        navigate('/guia')
       } else {
         navigate('/dashboard')
       }

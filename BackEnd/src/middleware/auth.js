@@ -15,6 +15,9 @@ const authenticate = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ error: 'Usuario no encontrado' });
     }
+    if (!user.active) {
+      return res.status(403).json({ error: 'Tu cuenta está desactivada' });
+    }
     req.user = user;
     next();
   } catch (error) {
