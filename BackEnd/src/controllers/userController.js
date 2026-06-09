@@ -6,7 +6,7 @@ exports.getAll = async (req, res) => {
 };
 
 exports.getById = async (req, res) => {
-  const user = await User.findByPk(req.params.id, { attributes: { exclude: ['password', 'phone', 'city', 'province'] } });
+  const user = await User.findByPk(req.params.id, { attributes: { exclude: ['password'] } });
   if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
   res.json(user);
 };
