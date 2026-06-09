@@ -5,20 +5,23 @@ import api from '../../services/api'
 function AdminCourses() {
   const [courses, setCourses] = useState([])
   const [categories, setCategories] = useState([])
+  const [instructors, setInstructors] = useState([])
   const [loading, setLoading] = useState(true)
   const [show, setShow] = useState(false)
   const [editCourse, setEditCourse] = useState(null)
-  const [form, setForm] = useState({ title: '', description: '', accessCode: '', categoryId: '', status: 'borrador' })
+  const [form, setForm] = useState({ title: '', description: '', accessCode: '', categoryId: '', status: 'borrador', instructorId: '' })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
   const loadData = () => {
     Promise.all([
       api.get('/courses'),
-      api.get('/categories')
-    ]).then(([c, cat]) => {
+      api.get('/categories'),
+      api.get('/users?role=instructor')
+    ]).then(([c, cat, ins]) => {
       setCourses(c.data)
       setCategories(cat.data)
+      setInstructors(ins.data)
     }).catch(() => {}).finally(() => setLoading(false))
   }
 
@@ -26,7 +29,7 @@ function AdminCourses() {
 
   const openEdit = (course) => {
     setEditCourse(course)
-    setForm({ title: course.title, description: course.description, accessCode: course.accessCode, categoryId: course.categoryId || '', status: course.status })
+    setForm({ title: course.title, description: course.description, accessCode: course.accessCode, categoryId: course.categoryId || '', status: course.status, instructorId: course.instructorId || '' })
     setShow(true)
   }
 
@@ -60,7 +63,7 @@ function AdminCourses() {
     <div>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h4 className="fw-bold mb-0"><i className="bi bi-book me-2"></i>Gestionar Cursos</h4>
-        <Button className="btn-verde" onClick={() => { setEditCourse(null); setForm({ title: '', description: '', accessCode: '', categoryId: '', status: 'borrador' }); setShow(true) }}>
+        <Button className="btn-verde" onClick={() => { setEditCourse(null); setForm({ title: '', description: '', accessCode: '', categoryId: '', status: 'borrador', instructorId: '' }); setShow(true) }}>
           <i className="bi bi-plus-lg me-2"></i>Nuevo Curso
         </Button>
       </div>
@@ -69,6 +72,7 @@ function AdminCourses() {
           <tr>
             <th>ID</th>
             <th>Título</th>
+            <th>Instructor</th>
             <th>Código</th>
             <th>Estado</th>
             <th>Categoría</th>
@@ -80,6 +84,7 @@ function AdminCourses() {
             <tr key={c.id}>
               <td>{c.id}</td>
               <td>{c.title}</td>
+              <td>{c.instructor?.name || '-'}</td>
               <td><code>{c.accessCode || '-'}</code></td>
               <td><Badge bg={c.status === 'publicado' ? 'success' : 'secondary'}>{c.status}</Badge></td>
               <td>{c.Category?.name || '-'}</td>
@@ -130,6 +135,13 @@ function AdminCourses() {
               <Form.Select value={form.status} onChange={e => setForm({...form, status: e.target.value})}>
                 <option value="borrador">Borrador</option>
                 <option value="publicado">Publicado</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Instructor</Form.Label>
+              <Form.Select value={form.instructorId} onChange={e => setForm({...form, instructorId: e.target.value})}>
+                <option value="">Seleccionar instructor</option>
+                {instructors.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
               </Form.Select>
             </Form.Group>
           </Form>

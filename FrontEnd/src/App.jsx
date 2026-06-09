@@ -13,6 +13,7 @@ import StudentRoute from './components/layout/StudentRoute'
 import Home from './pages/public/Home'
 import Nosotros from './pages/public/Nosotros'
 import Faq from './pages/public/Faq'
+import Guia from './pages/public/Guia'
 import Contacto from './pages/public/Contacto'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
@@ -64,6 +65,7 @@ function App() {
               <Route path="/nosotros" element={<Nosotros />} />
               <Route path="/faq" element={<Faq />} />
               <Route path="/contacto" element={<Contacto />} />
+              <Route path="/guia" element={<Guia />} />
               <Route path="/login" element={<Login />} />
               <Route path="/registro" element={<Register />} />
               <Route path="/productos" element={<ProductList />} />
