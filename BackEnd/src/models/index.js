@@ -28,13 +28,15 @@ Category.hasMany(Course, { foreignKey: 'categoryId' });
 Course.hasMany(Module, { foreignKey: 'courseId', onDelete: 'CASCADE' });
 Module.belongsTo(Course, { foreignKey: 'courseId' });
 
+Course.hasMany(Enrollment, { foreignKey: 'courseId' });
+Enrollment.belongsTo(Course, { foreignKey: 'courseId' });
+
 Module.hasMany(Lesson, { foreignKey: 'moduleId', onDelete: 'CASCADE' });
 Lesson.belongsTo(Module, { foreignKey: 'moduleId' });
 
 User.belongsToMany(Course, { through: Enrollment, foreignKey: 'userId' });
 Course.belongsToMany(User, { through: Enrollment, foreignKey: 'courseId' });
 Enrollment.belongsTo(User, { foreignKey: 'userId' });
-Enrollment.belongsTo(Course, { foreignKey: 'courseId' });
 
 User.hasMany(LessonProgress, { foreignKey: 'userId' });
 LessonProgress.belongsTo(User, { foreignKey: 'userId' });

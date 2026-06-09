@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');
+const { Op, fn, col } = require('sequelize');
 const { Course, Module, Lesson, Category, User, Enrollment } = require('../models');
 
 function normalizeText(text) {
@@ -11,16 +11,32 @@ function normalizeText(text) {
 exports.getAll = async (req, res) => {
   const where = {};
   if (req.query.categoryId) where.categoryId = req.query.categoryId;
-  let courses = await Course.findAll({
-    where: req.user?.role === 'admin' ? where : { ...where, status: 'publicado' },
-    attributes: { include: ['instructorId'] },
-    include: [{ model: User, as: 'instructor', attributes: ['id', 'name'] }, Category],
+  if (req.query.instructorId) where.instructorId = req.query.instructorId;
+
+  const isAdmin = req.user?.role === 'admin';
+  if (!isAdmin) where.status = 'publicado';
+
+  const courses = await Course.findAll({
+    where,
+    attributes: {
+      include: [
+        [fn('COUNT', col('Enrollments.id')), 'studentCount'],
+        'instructorId'
+      ]
+    },
+    include: [
+      { model: User, as: 'instructor', attributes: ['id', 'name'] },
+      Category,
+      { model: Enrollment, attributes: [], required: false }
+    ],
+    group: ['Course.id', 'instructor.id', 'Category.id'],
   });
+
   if (req.query.search) {
     const term = normalizeText(req.query.search);
-    courses = courses.filter(course =>
+    return res.json(courses.filter(course =>
       normalizeText(course.title).includes(term)
-    );
+    ));
   }
   res.json(courses);
 };

@@ -19,9 +19,8 @@ function InstructorCourses() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await api.get('/courses')
-        const myCourses = res.data.filter(c => c.instructorId === user.id)
-        setCourses(myCourses)
+        const res = await api.get('/courses', { params: { instructorId: user.id } })
+        setCourses(res.data)
       } catch (error) {
         console.error('Error:', error)
       }
@@ -118,7 +117,7 @@ function InstructorCourses() {
                 {courses.map(course => (
                   <tr key={course.id}>
                     <td className="fw-bold">{course.title}</td>
-                    <td>-</td>
+                    <td><span className="badge bg-primary text-white fs-6 px-3 py-2">{course.studentCount || 0}</span></td>
                     <td><code>{course.accessCode}</code></td>
                     <td>
                       <Badge bg={course.status === 'publicado' ? 'success' : 'warning'}>
