@@ -1,38 +1,41 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { Container, Row, Col, Button, Table, Form } from 'react-bootstrap'
+import { Container, Button, Table, Form } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
+import { useToast } from '../../context/ToastContext'
 import api from '../../services/api'
 import { useState } from 'react'
 
 function Cart() {
   const { user } = useAuth()
   const { items, updateQuantity, removeItem, clearCart, total, count } = useCart()
+  const { success, error: toastError, warning } = useToast()
   const navigate = useNavigate()
   const [ordering, setOrdering] = useState(false)
-  const [success, setSuccess] = useState(false)
+  const [orderSuccess, setOrderSuccess] = useState(false)
 
   const handleCheckout = async () => {
     if (!user) { navigate('/login'); return }
     if (user.role === 'admin') { 
-      alert('Los administradores no pueden realizar compras'); 
-      return; 
+      warning('Los administradores no pueden realizar compras')
+      return 
     }
     setOrdering(true)
     try {
       await api.post('/orders', {
         items: items.map(i => ({ productId: i.id, quantity: i.quantity }))
       })
-      setSuccess(true)
+      setOrderSuccess(true)
       clearCart()
-    } catch (err) {
-      alert('Error al crear el pedido')
+      success('¡Pedido realizado con éxito!')
+    } catch {
+      toastError('Error al crear el pedido')
     } finally {
       setOrdering(false)
     }
   }
 
-  if (success) {
+  if (orderSuccess) {
     return (
       <Container className="py-5 text-center">
         <div className="py-5">

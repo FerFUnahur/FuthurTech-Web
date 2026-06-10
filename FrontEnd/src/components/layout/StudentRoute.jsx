@@ -7,7 +7,9 @@ function StudentRoute({ children }) {
 
   if (loading) return <div className="text-center py-5"><Spinner animation="border" /></div>
   if (!user) return <Navigate to="/login" replace />
-  if (user.role !== 'student') return <Navigate to="/instructor" replace />
+  if (user.role === 'admin') return <Navigate to="/admin" replace />
+  if (user.role === 'instructor') return <Navigate to="/instructor" replace />
+  if (user.role !== 'student') return <Navigate to="/dashboard" replace />
 
   return children
 }

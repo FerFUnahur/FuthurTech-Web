@@ -4,11 +4,13 @@ import { Container, Row, Col, Button, Spinner, Alert } from 'react-bootstrap'
 import api from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
+import { useToast } from '../../context/ToastContext'
 
 function ProductDetail() {
   const { id } = useParams()
   const { user } = useAuth()
   const { addItem } = useCart()
+  const { success, warning } = useToast()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [added, setAdded] = useState(false)
@@ -24,11 +26,12 @@ function ProductDetail() {
 
   const handleAdd = () => {
     if (user?.role === 'admin') {
-      alert('Los administradores no pueden comprar productos')
+      warning('Los administradores no pueden comprar productos')
       return
     }
     addItem({ id: product.id, name: product.name, price: product.price, image: product.image })
     setAdded(true)
+    success('Agregado al carrito')
     setTimeout(() => setAdded(false), 2000)
   }
 

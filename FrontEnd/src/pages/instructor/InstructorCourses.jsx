@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Table, Button, Badge, Modal, Form } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../services/api'
 
 function InstructorCourses() {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [courses, setCourses] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [editingCourse, setEditingCourse] = useState(null)
@@ -116,7 +118,9 @@ function InstructorCourses() {
               <tbody>
                 {courses.map(course => (
                   <tr key={course.id}>
-                    <td className="fw-bold">{course.title}</td>
+                    <td className="fw-bold" style={{ cursor: 'pointer' }} onClick={() => navigate(`/instructor/cursos/${course.id}`)}>
+                      {course.title}
+                    </td>
                     <td><span className="badge bg-primary text-white fs-6 px-3 py-2">{course.studentCount || 0}</span></td>
                     <td><code>{course.accessCode}</code></td>
                     <td>

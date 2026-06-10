@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Button, Spinner, Alert } from 'react-bootstrap'
 import api from '../../services/api'
+import { useToast } from '../../context/ToastContext'
 
 function Certificates() {
   const [certs, setCerts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const { error: toastError } = useToast()
 
   useEffect(() => {
-    api.get('/certificates').then(res => setCerts(res.data)).catch(() => {}).finally(() => setLoading(false))
+    api.get('/certificates').then(res => setCerts(res.data)).catch(() => {
+      setError('Error al cargar los certificados')
+    }).finally(() => setLoading(false))
   }, [])
 
   const handleDownload = async (id) => {
@@ -21,8 +26,8 @@ function Certificates() {
       link.click()
       link.remove()
       window.URL.revokeObjectURL(url)
-    } catch (err) {
-      alert('Error al descargar el certificado')
+    } catch {
+      toastError('Error al descargar el certificado')
     }
   }
 
@@ -32,6 +37,13 @@ function Certificates() {
 
       {loading ? (
         <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>
+      ) : error ? (
+        <div className="text-center py-5">
+          <Alert variant="danger">{error}</Alert>
+          <Button variant="outline-primary" onClick={() => { setError(''); setLoading(true); api.get('/certificates').then(res => setCerts(res.data)).catch(() => setError('Error al cargar los certificados')).finally(() => setLoading(false)) }}>
+            Reintentar
+          </Button>
+        </div>
       ) : certs.length === 0 ? (
         <div className="text-center py-5 bg-light rounded-3">
           <i className="bi bi-award" style={{ fontSize: '4rem', color: '#ccc' }}></i>

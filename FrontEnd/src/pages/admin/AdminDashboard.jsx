@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { NavLink, Outlet, useLocation, Link } from 'react-router-dom'
-import { Alert, Container, Row, Col, Nav, Card, Spinner, Button } from 'react-bootstrap'
+import { Alert, Container, Row, Col, Nav, Card, Spinner } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../services/api'
 

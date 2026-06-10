@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react'
 import { Table, Badge, Card, Row, Col } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
 import api from '../../services/api'
+import TablePagination from '../../components/TablePagination'
+
+const ROWS_PER_PAGE = 10
 
 function InstructorStudents() {
   const { user } = useAuth()
   const [students, setStudents] = useState([])
   const [courses, setCourses] = useState([])
   const [selectedCourse, setSelectedCourse] = useState(null)
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +45,7 @@ function InstructorStudents() {
         }))
 
         setStudents(studentsList)
+        setPage(1)
       } catch (error) {
         console.error('Error:', error)
       }
@@ -115,7 +120,7 @@ function InstructorStudents() {
                       </tr>
                     </thead>
                     <tbody>
-                      {students.map((student, idx) => (
+                      {students.slice((page - 1) * ROWS_PER_PAGE, page * ROWS_PER_PAGE).map((student, idx) => (
                         <tr key={idx}>
                           <td className="fw-bold">{student.studentName}</td>
                           <td>{student.studentEmail}</td>
@@ -129,6 +134,11 @@ function InstructorStudents() {
                       ))}
                     </tbody>
                   </Table>
+                  <TablePagination
+                    currentPage={page}
+                    totalPages={Math.ceil(students.length / ROWS_PER_PAGE)}
+                    onPageChange={setPage}
+                  />
                 </>
               )}
             </>

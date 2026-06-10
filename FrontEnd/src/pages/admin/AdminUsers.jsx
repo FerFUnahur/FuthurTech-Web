@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Table, Button, Modal, Form, Spinner, Badge, Alert } from 'react-bootstrap'
-
 import api from '../../services/api'
+import TablePagination from '../../components/TablePagination'
+import { useToast } from '../../context/ToastContext'
+
+const ROWS_PER_PAGE = 10
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([])
@@ -10,9 +13,14 @@ export default function AdminUsers() {
   const [editUser, setEditUser] = useState(null)
   const [form, setForm] = useState({ role: 'student' })
   const [error, setError] = useState('')
+  const [page, setPage] = useState(1)
+  const [roleFilter, setRoleFilter] = useState('')
+  const { success, error: toastError } = useToast()
 
   const loadUsers = () => {
-    api.get('/users').then(res => setUsers(res.data)).catch(() => {}).finally(() => setLoading(false))
+    api.get('/users').then(res => setUsers(res.data)).catch(() => {
+      toastError('Error al cargar los usuarios')
+    }).finally(() => setLoading(false))
   }
 
   useEffect(() => { loadUsers() }, [])
@@ -35,17 +43,32 @@ export default function AdminUsers() {
 
   const handleDelete = async (id) => {
     if (!confirm('¿Eliminar este usuario?')) return
-    await api.delete(`/users/${id}`)
-    loadUsers()
+    try {
+      await api.delete(`/users/${id}`)
+      success('Usuario eliminado correctamente')
+      loadUsers()
+    } catch {
+      toastError('Error al eliminar el usuario')
+    }
   }
+
+  const filteredUsers = roleFilter ? users.filter(u => u.role === roleFilter) : users
 
   if (loading) return <div className="text-center py-5"><Spinner animation="border" /></div>
 
   return (
     <div>
-      {/* Tip: en el panel admin las pestañas se mueven por rutas internas */}
-
       <h4 className="fw-bold mb-4"><i className="bi bi-people me-2"></i>Gestionar Usuarios</h4>
+
+      <div className="mb-3 d-flex gap-2 align-items-center">
+        <Form.Select value={roleFilter} onChange={e => { setRoleFilter(e.target.value); setPage(1) }} style={{ width: 'auto' }}>
+          <option value="">Todos los roles</option>
+          <option value="student">Estudiantes</option>
+          <option value="instructor">Instructores</option>
+          <option value="admin">Administradores</option>
+        </Form.Select>
+        <span className="text-muted small">{filteredUsers.length} usuario(s)</span>
+      </div>
 
       <Table responsive striped hover>
 <thead className="table-dark">
@@ -59,7 +82,7 @@ export default function AdminUsers() {
             </tr>
           </thead>
           <tbody>
-            {users.map(u => (
+            {filteredUsers.slice((page - 1) * ROWS_PER_PAGE, page * ROWS_PER_PAGE).map(u => (
               <tr key={u.id}>
                 <td>{u.id}</td>
                 <td>{u.name}</td>
@@ -74,6 +97,11 @@ export default function AdminUsers() {
             ))}
           </tbody>
       </Table>
+      <TablePagination
+        currentPage={page}
+        totalPages={Math.ceil(filteredUsers.length / ROWS_PER_PAGE)}
+        onPageChange={setPage}
+      />
 
       <Modal show={show} onHide={() => setShow(false)}>
         <Modal.Header closeButton><Modal.Title>Cambiar Rol - {editUser?.name}</Modal.Title></Modal.Header>

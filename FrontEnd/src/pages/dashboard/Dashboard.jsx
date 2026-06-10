@@ -2,20 +2,23 @@ import { useState, useEffect } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { Container, Row, Col, Card, Button, Spinner, Badge } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
+import { useToast } from '../../context/ToastContext'
 import api from '../../services/api'
 
 function Dashboard() {
   const { user } = useAuth()
+  const { error: toastError } = useToast()
   const [enrollments, setEnrollments] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/enrollments').then(res => setEnrollments(res.data)).catch(() => {}).finally(() => setLoading(false))
+    api.get('/enrollments').then(res => setEnrollments(res.data)).catch(() => {
+      toastError('Error al cargar los cursos')
+    }).finally(() => setLoading(false))
   }, [])
 
-  if (user?.role === 'admin' || user?.role === 'instructor') {
-    return <Navigate to="/admin" replace />
-  }
+  if (user?.role === 'admin') return <Navigate to="/admin" replace />
+  if (user?.role === 'instructor') return <Navigate to="/instructor" replace />
 
   return (
     <Container className="py-5">

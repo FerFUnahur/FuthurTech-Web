@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Container, Row, Col, Card, Form, Button, Alert, Spinner, InputGroup } from 'react-bootstrap'
+import { Container, Row, Col, Card, Form, Button, Spinner, InputGroup } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
+import { useToast } from '../../context/ToastContext'
 
 function Register() {
   const { register, user } = useAuth()
+  const { success, error: toastError } = useToast()
   const navigate = useNavigate()
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '', birthDate: '' })
-  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -16,17 +17,17 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setError('')
     if (form.password !== form.confirmPassword) {
-      setError('Las contraseñas no coinciden')
+      toastError('Las contraseñas no coinciden')
       return
     }
     setLoading(true)
     try {
       await register({ name: form.name, email: form.email, password: form.password, birthDate: form.birthDate })
+      success('¡Cuenta creada exitosamente!')
       navigate('/dashboard')
-    } catch (err) {
-      setError(err.response?.data?.error || 'Error al registrarse')
+    } catch {
+      // Error handled by useAuth register interceptor
     } finally {
       setLoading(false)
     }
@@ -39,7 +40,6 @@ function Register() {
           <Card className="shadow-sm border-0">
             <Card.Body className="p-4">
               <h3 className="fw-bold text-center mb-4"><i className="bi bi-person-plus me-2"></i>Crear Cuenta</h3>
-              {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>Nombre completo</Form.Label>

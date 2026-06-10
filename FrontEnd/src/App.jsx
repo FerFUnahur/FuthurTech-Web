@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
+import { ToastProvider } from './context/ToastContext'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import ProtectedRoute from './components/layout/ProtectedRoute'
@@ -15,6 +16,7 @@ import Nosotros from './pages/public/Nosotros'
 import Faq from './pages/public/Faq'
 import Guia from './pages/public/Guia'
 import Contacto from './pages/public/Contacto'
+import NotFound from './pages/public/NotFound'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import ProductList from './pages/shop/ProductList'
@@ -32,6 +34,7 @@ import AdminCourses from './pages/admin/AdminCourses'
 import AdminOrders from './pages/admin/AdminOrders'
 import InstructorDashboard from './pages/instructor/InstructorDashboard'
 import InstructorCourses from './pages/instructor/InstructorCourses'
+import InstructorCourseDetail from './pages/instructor/InstructorCourseDetail'
 import InstructorStudents from './pages/instructor/InstructorStudents'
 
 import './styles/custom.css'
@@ -54,6 +57,7 @@ function App() {
   }, [])
 
   return (
+    <ToastProvider>
     <AuthProvider>
       <CartProvider>
         <ScrollToTop />
@@ -84,15 +88,17 @@ function App() {
               </Route>
               <Route path="/instructor" element={<InstructorRoute><InstructorDashboard /></InstructorRoute>}>
                 <Route path="cursos" element={<InstructorCourses />} />
-                <Route path="cursos/:id" element={<InstructorCourses />} />
+                <Route path="cursos/:id" element={<InstructorCourseDetail />} />
                 <Route path="estudiantes" element={<InstructorStudents />} />
               </Route>
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           <Footer />
         </div>
       </CartProvider>
     </AuthProvider>
+    </ToastProvider>
   )
 }
 

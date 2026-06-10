@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Table, Button, Modal, Form, Spinner, Badge, Alert } from 'react-bootstrap'
 import api from '../../services/api'
+import TablePagination from '../../components/TablePagination'
+import { useToast } from '../../context/ToastContext'
+
+const ROWS_PER_PAGE = 10
 
 function AdminCourses() {
   const [courses, setCourses] = useState([])
@@ -12,6 +16,8 @@ function AdminCourses() {
   const [form, setForm] = useState({ title: '', description: '', accessCode: '', categoryId: '', status: 'borrador', instructorId: '' })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [page, setPage] = useState(1)
+  const { success, error: toastError } = useToast()
 
   const loadData = () => {
     Promise.all([
@@ -22,7 +28,9 @@ function AdminCourses() {
       setCourses(c.data)
       setCategories(cat.data)
       setInstructors(ins.data)
-    }).catch(() => {}).finally(() => setLoading(false))
+    }).catch(() => {
+      toastError('Error al cargar los datos')
+    }).finally(() => setLoading(false))
   }
 
   useEffect(() => { loadData() }, [])
@@ -53,8 +61,13 @@ function AdminCourses() {
 
   const handleDelete = async (id) => {
     if (!confirm('¿Eliminar este curso?')) return
-    await api.delete(`/courses/${id}`)
-    loadData()
+    try {
+      await api.delete(`/courses/${id}`)
+      success('Curso eliminado correctamente')
+      loadData()
+    } catch {
+      toastError('Error al eliminar el curso')
+    }
   }
 
   if (loading) return <div className="text-center py-5"><Spinner animation="border" /></div>
@@ -80,7 +93,7 @@ function AdminCourses() {
           </tr>
         </thead>
         <tbody>
-          {courses.map(c => (
+          {courses.slice((page - 1) * ROWS_PER_PAGE, page * ROWS_PER_PAGE).map(c => (
             <tr key={c.id}>
               <td>{c.id}</td>
               <td>{c.title}</td>
@@ -96,6 +109,11 @@ function AdminCourses() {
           ))}
         </tbody>
       </Table>
+      <TablePagination
+        currentPage={page}
+        totalPages={Math.ceil(courses.length / ROWS_PER_PAGE)}
+        onPageChange={setPage}
+      />
 
       <Modal show={show} onHide={() => setShow(false)} size="lg">
         <Modal.Header closeButton><Modal.Title>{editCourse ? 'Editar Curso' : 'Nuevo Curso'}</Modal.Title></Modal.Header>

@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Table, Button, Badge, Spinner } from 'react-bootstrap'
 import api from '../../services/api'
+import TablePagination from '../../components/TablePagination'
+import { useToast } from '../../context/ToastContext'
+
+const ROWS_PER_PAGE = 10
 
 const statusColors = {
   pendiente: 'warning',
@@ -12,16 +16,25 @@ const statusColors = {
 function AdminOrders() {
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const { success, error: toastError } = useToast()
 
   const loadOrders = () => {
-    api.get('/orders').then(res => setOrders(res.data)).catch(() => {}).finally(() => setLoading(false))
+    api.get('/orders').then(res => setOrders(res.data)).catch(() => {
+      toastError('Error al cargar los pedidos')
+    }).finally(() => setLoading(false))
   }
 
   useEffect(() => { loadOrders() }, [])
 
   const updateStatus = async (id, status) => {
-    await api.put(`/orders/${id}/status`, { status })
-    loadOrders()
+    try {
+      await api.put(`/orders/${id}/status`, { status })
+      success('Estado actualizado correctamente')
+      loadOrders()
+    } catch {
+      toastError('Error al actualizar el estado')
+    }
   }
 
   if (loading) return <div className="text-center py-5"><Spinner animation="border" /></div>
@@ -32,6 +45,7 @@ function AdminOrders() {
       {orders.length === 0 ? (
         <p className="text-muted">No hay pedidos registrados.</p>
       ) : (
+      <>
         <Table responsive striped hover>
           <thead className="table-dark">
             <tr>
@@ -45,7 +59,7 @@ function AdminOrders() {
             </tr>
           </thead>
           <tbody>
-            {orders.map(o => (
+            {orders.slice((page - 1) * ROWS_PER_PAGE, page * ROWS_PER_PAGE).map(o => (
               <tr key={o.id}>
                 <td>#{o.id}</td>
                 <td>{o.userId}</td>
@@ -71,6 +85,12 @@ function AdminOrders() {
             ))}
           </tbody>
         </Table>
+        <TablePagination
+          currentPage={page}
+          totalPages={Math.ceil(orders.length / ROWS_PER_PAGE)}
+          onPageChange={setPage}
+        />
+      </>
       )}
     </div>
   )

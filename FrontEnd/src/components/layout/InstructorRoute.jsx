@@ -8,9 +8,9 @@ function InstructorRoute({ children }) {
     return <div className="p-4 text-center">Cargando...</div>
   }
 
-  if (!user || (user.role !== 'instructor' && user.role !== 'admin')) {
-    return <Navigate to="/login" />
-  }
+  if (!user) return <Navigate to="/login" replace />
+  if (user.role === 'student') return <Navigate to="/dashboard" replace />
+  if (user.role !== 'instructor' && user.role !== 'admin') return <Navigate to="/login" replace />
 
   return children
 }

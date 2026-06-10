@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Button, Spinner, Alert, ListGroup } from 'react-bootstrap'
 import api from '../../services/api'
+import { useToast } from '../../context/ToastContext'
 
 function LessonView() {
   const { courseId, lessonId } = useParams()
   const navigate = useNavigate()
+  const { error: toastError } = useToast()
   const [course, setCourse] = useState(null)
   const [lesson, setLesson] = useState(null)
   const [progress, setProgress] = useState({})
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState('')
 
   const loadData = async () => {
     try {
@@ -29,8 +32,8 @@ function LessonView() {
         })
         setProgress(progMap)
       }
-    } catch (err) {
-      console.error(err)
+    } catch {
+      setLoadError('Error al cargar la lección')
     } finally {
       setLoading(false)
     }
@@ -48,8 +51,8 @@ function LessonView() {
     try {
       await api.post(`/lessons/${lessonId}/progress`)
       loadData()
-    } catch (err) {
-      console.error(err)
+    } catch {
+      toastError('Error al marcar la lección como completada')
     }
   }
 
@@ -61,7 +64,7 @@ function LessonView() {
   const pct = allLessons.length > 0 ? Math.round((completedLessons / allLessons.length) * 100) : 0
 
   if (loading) return <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>
-  if (!course || !lesson) return <Container className="py-5"><Alert variant="warning">Lección no encontrada</Alert></Container>
+  if (loadError || !course || !lesson) return <Container className="py-5"><Alert variant="danger">{loadError || 'Lección no encontrada'}</Alert></Container>
 
   return (
     <Container fluid className="py-4">

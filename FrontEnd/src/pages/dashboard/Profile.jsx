@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
+import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
+import { useToast } from '../../context/ToastContext'
 import api from '../../services/api'
 
 function Profile() {
   const { user, setUser } = useAuth()
+  const { success, error: toastError } = useToast()
   const [form, setForm] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -12,7 +14,6 @@ function Profile() {
     bio: user?.bio || '',
   })
   const [saving, setSaving] = useState(false)
-  const [saved, setSaved] = useState(false)
 
   useEffect(() => {
     setForm({
@@ -29,10 +30,9 @@ function Profile() {
     try {
       const res = await api.put(`/users/${user.id}`, form)
       setUser(res.data.user)
-      setSaved(true)
-      setTimeout(() => setSaved(false), 3000)
-    } catch (err) {
-      alert('Error al guardar')
+      success('Perfil actualizado correctamente')
+    } catch {
+      toastError('Error al guardar el perfil')
     } finally {
       setSaving(false)
     }
@@ -45,7 +45,6 @@ function Profile() {
         <Col md={6}>
           <Card className="border-0 shadow-sm">
             <Card.Body className="p-4">
-              {saved && <Alert variant="success">Perfil actualizado correctamente</Alert>}
               <Form onSubmit={handleSubmit}>
                 <div className="text-center mb-4">
                   <div className="rounded-circle bg-azul text-white d-inline-flex align-items-center justify-content-center" style={{ width: 80, height: 80, fontSize: '2rem' }}>

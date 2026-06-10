@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Container, Row, Col, Card, Form, Button, Alert, Spinner, InputGroup } from 'react-bootstrap'
+import { Container, Row, Col, Card, Form, Button, Spinner, InputGroup } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
+import { useToast } from '../../context/ToastContext'
 
 function Login() {
   const { login, user } = useAuth()
+  const { success } = useToast()
   const navigate = useNavigate()
   const [form, setForm] = useState({ email: 'student@futhurtech.com', password: '123456' })
-  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
@@ -24,10 +25,10 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setError('')
     setLoading(true)
     try {
       const userData = await login(form.email, form.password)
+      success(`¡Bienvenido, ${userData.name}!`)
       if (userData.role === 'admin') {
         navigate('/admin')
       } else if (userData.role === 'instructor') {
@@ -37,8 +38,8 @@ function Login() {
       } else {
         navigate('/dashboard')
       }
-    } catch (err) {
-      setError(err.response?.data?.error || 'Error al iniciar sesión')
+    } catch {
+      // Error handled by useAuth login interceptor
     } finally {
       setLoading(false)
     }
@@ -51,7 +52,6 @@ function Login() {
           <Card className="shadow-sm border-0">
             <Card.Body className="p-4">
               <h3 className="fw-bold text-center mb-4"><i className="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión</h3>
-              {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>Email</Form.Label>
