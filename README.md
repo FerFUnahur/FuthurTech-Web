@@ -18,8 +18,10 @@ Plataforma de robótica educativa.
 - **Cursos online** — cada curso tiene módulos y lecciones con videos y contenido. Podés ver tu avance.
 - **Progreso de aprendizaje** — marcás las lecciones como completadas y el sistema lleva la cuenta.
 - **Panel de usuario (Dashboard)** — desde acá ves tus cursos, editás tu perfil y descargás certificados.
+- **Panel del instructor** — permite crear y editar cursos, gestionar módulos y lecciones, y ver los estudiantes inscriptos por curso.
 - **Panel de administración** — solo para administradores. Permite gestionar usuarios, cursos y pedidos desde un solo lugar.
 - **Certificados PDF** — al completar un curso podés descargar un certificado con tu nombre.
+- **Guía para estudiantes** — explica los 3 pasos: comprar un kit, inscribirse a un curso y usar los códigos de acceso.
 - **Sitio web institucional** — las páginas de inicio, hardware, cursos, contacto, preguntas frecuentes y nosotros. También incluye un login demo, un dashboard de prueba y un perfil editable (corresponde al prototipo legacy).
 
 ---
@@ -114,7 +116,7 @@ Con el BackEnd y el FrontEnd funcionando, ya podés navegar la página web.
 | Estudiante | student@futhurtech.com | 123456 |
 
 - El **administrador** puede entrar al panel de administración.
-- El **instructor** puede crear y editar cursos.
+- El **instructor** puede crear y editar cursos, gestionar módulos/lecciones y ver sus estudiantes.
 - El **estudiante** puede inscribirse a cursos y ver su progreso.
 
 ---
@@ -150,6 +152,7 @@ Haciendo doble clic o arrastrándolo al navegador. Las credenciales para este pr
 |---|---|
 | `npm run dev` | Enciende la página web |
 | `npm run build` | Prepara la página para subir a un servidor real |
+| `npm run lint` | Revisa el código en busca de errores de estilo |
 
 ---
 
@@ -176,4 +179,10 @@ Esta carpeta contiene un prototipo del sitio hecho con HTML, CSS y JavaScript pu
 - Si modificás el footer del prototipo legacy, aplicá el cambio en todas las páginas HTML.
 - El BackEnd no tiene migraciones: al ejecutar `npm run seed` se borra y recrea la base de datos completa.
 - El FrontEnd no usa TypeScript — todo es JavaScript.
-- Para agregar rutas protegidas usá los componentes `<ProtectedRoute>` (requiere inicio de sesión) o `<AdminRoute>` (requiere ser admin).
+- Las rutas protegidas usan estos componentes:
+  - `<ProtectedRoute>` — requiere inicio de sesión (cualquier rol).
+  - `<AdminRoute>` — permite admin e instructor.
+  - `<InstructorRoute>` — permite instructor e admin.
+  - `<StudentRoute>` — solo estudiantes. Redirige admin a `/admin` e instructor a `/instructor`.
+- Cualquier ruta que no exista muestra una página 404.
+- Login y Register tienen validaciones front: formato de email, contraseña mínima de 6 caracteres y coincidencia de contraseñas.

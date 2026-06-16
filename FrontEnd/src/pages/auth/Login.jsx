@@ -6,9 +6,9 @@ import { useToast } from '../../context/ToastContext'
 
 function Login() {
   const { login, user } = useAuth()
-  const { success } = useToast()
+  const { success, error: toastError } = useToast()
   const navigate = useNavigate()
-  const [form, setForm] = useState({ email: 'student@futhurtech.com', password: '123456' })
+  const [form, setForm] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
@@ -25,6 +25,19 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!form.email.trim()) {
+      toastError('Ingresá tu email')
+      return
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(form.email)) {
+      toastError('Ingresá un email válido')
+      return
+    }
+    if (!form.password) {
+      toastError('Ingresá tu contraseña')
+      return
+    }
     setLoading(true)
     try {
       const userData = await login(form.email, form.password)
@@ -55,12 +68,12 @@ function Login() {
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} required placeholder="tu@email.com" />
+                  <Form.Control type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} placeholder="tu@email.com" />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Contraseña</Form.Label>
                   <InputGroup>
-                    <Form.Control type={showPassword ? 'text' : 'password'} value={form.password} onChange={e => setForm({...form, password: e.target.value})} required placeholder="Tu contraseña" />
+                    <Form.Control type={showPassword ? 'text' : 'password'} value={form.password} onChange={e => setForm({...form, password: e.target.value})} placeholder="Tu contraseña" />
                     <Button
                       type="button"
                       variant="outline-secondary"

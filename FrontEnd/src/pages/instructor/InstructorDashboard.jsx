@@ -37,7 +37,6 @@ function InstructorDashboard() {
           setStats({ courses: 0, enrollments: 0, students: 0 })
         }
       } catch (err) {
-        console.error('Error al cargar datos:', err)
         setError(err?.response?.data?.error || 'No se pudieron cargar las estadísticas')
       } finally {
         setLoading(false)

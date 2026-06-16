@@ -1,11 +1,12 @@
 import { useAuth } from '../../context/AuthContext'
 import { Navigate } from 'react-router-dom'
+import { Spinner } from 'react-bootstrap'
 
 function InstructorRoute({ children }) {
   const { user, loading } = useAuth()
 
   if (loading) {
-    return <div className="p-4 text-center">Cargando...</div>
+    return <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>
   }
 
   if (!user) return <Navigate to="/login" replace />

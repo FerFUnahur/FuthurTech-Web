@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Table, Badge, Card, Row, Col } from 'react-bootstrap'
+import { Table, Badge, Card, Row, Col, Spinner } from 'react-bootstrap'
 import { useAuth } from '../../context/AuthContext'
+import { useToast } from '../../context/ToastContext'
 import api from '../../services/api'
 import TablePagination from '../../components/TablePagination'
 
@@ -8,23 +9,26 @@ const ROWS_PER_PAGE = 10
 
 function InstructorStudents() {
   const { user } = useAuth()
+  const { error: toastError } = useToast()
   const [students, setStudents] = useState([])
   const [courses, setCourses] = useState([])
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Obtener cursos del instructor
         const coursesRes = await api.get('/courses')
         const myCourses = coursesRes.data.filter(c => c.instructorId === user.id)
         setCourses(myCourses)
         if (myCourses.length > 0) {
           setSelectedCourse(myCourses[0].id)
         }
-      } catch (error) {
-        console.error('Error:', error)
+      } catch {
+        toastError('Error al cargar los cursos')
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -46,8 +50,8 @@ function InstructorStudents() {
 
         setStudents(studentsList)
         setPage(1)
-      } catch (error) {
-        console.error('Error:', error)
+      } catch {
+        toastError('Error al cargar los estudiantes')
       }
     }
 
@@ -58,7 +62,9 @@ function InstructorStudents() {
     <div>
           <h3 className="fw-bold mb-4"><i className="bi bi-people me-2 text-azul"></i>Estudiantes Inscriptos</h3>
 
-          {courses.length === 0 ? (
+          {loading ? (
+            <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>
+          ) : courses.length === 0 ? (
             <div className="alert alert-info">
               <i className="bi bi-info-circle me-2"></i>
               No tienes cursos aún.
@@ -111,7 +117,7 @@ function InstructorStudents() {
                   </Row>
 
                   <Table responsive striped hover className="shadow-sm">
-                    <thead className="table-light">
+                    <thead className="table-dark">
                       <tr>
                         <th>Estudiante</th>
                         <th>Email</th>

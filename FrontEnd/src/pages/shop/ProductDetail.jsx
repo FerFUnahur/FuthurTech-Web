@@ -10,7 +10,7 @@ function ProductDetail() {
   const { id } = useParams()
   const { user } = useAuth()
   const { addItem } = useCart()
-  const { success, warning } = useToast()
+  const { success, warning, error: toastError } = useToast()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [added, setAdded] = useState(false)
@@ -18,7 +18,9 @@ function ProductDetail() {
   useEffect(() => {
     api.get(`/products/${id}`).then(res => {
       setProduct(res.data)
-    }).catch(() => {}).finally(() => setLoading(false))
+    }).catch(() => {
+      toastError('Error al cargar el producto')
+    }).finally(() => setLoading(false))
   }, [id])
 
   if (loading) return <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>

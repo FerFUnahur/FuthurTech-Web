@@ -17,13 +17,26 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (form.name.trim().length < 2) {
+      toastError('El nombre debe tener al menos 2 caracteres')
+      return
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(form.email)) {
+      toastError('Ingresá un email válido')
+      return
+    }
+    if (form.password.length < 6) {
+      toastError('La contraseña debe tener al menos 6 caracteres')
+      return
+    }
     if (form.password !== form.confirmPassword) {
       toastError('Las contraseñas no coinciden')
       return
     }
     setLoading(true)
     try {
-      await register({ name: form.name, email: form.email, password: form.password, birthDate: form.birthDate })
+      await register({ name: form.name.trim(), email: form.email, password: form.password, birthDate: form.birthDate })
       success('¡Cuenta creada exitosamente!')
       navigate('/dashboard')
     } catch {
@@ -43,11 +56,11 @@ function Register() {
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>Nombre completo</Form.Label>
-                  <Form.Control type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})} required placeholder="Tu nombre" />
+                  <Form.Control type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Tu nombre" />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} required placeholder="tu@email.com" />
+                  <Form.Control type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} placeholder="tu@email.com" />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Fecha de nacimiento</Form.Label>
@@ -56,7 +69,7 @@ function Register() {
                 <Form.Group className="mb-3">
                   <Form.Label>Contraseña</Form.Label>
                   <InputGroup>
-                    <Form.Control type={showPassword ? 'text' : 'password'} value={form.password} onChange={e => setForm({...form, password: e.target.value})} required placeholder="Mínimo 6 caracteres" minLength={6} />
+                    <Form.Control type={showPassword ? 'text' : 'password'} value={form.password} onChange={e => setForm({...form, password: e.target.value})} placeholder="Mínimo 6 caracteres" />
                     <Button
                       type="button"
                       variant="outline-secondary"
@@ -70,7 +83,7 @@ function Register() {
                 <Form.Group className="mb-3">
                   <Form.Label>Confirmar contraseña</Form.Label>
                   <InputGroup>
-                    <Form.Control type={showConfirmPassword ? 'text' : 'password'} value={form.confirmPassword} onChange={e => setForm({...form, confirmPassword: e.target.value})} required placeholder="Repetí la contraseña" />
+                    <Form.Control type={showConfirmPassword ? 'text' : 'password'} value={form.confirmPassword} onChange={e => setForm({...form, confirmPassword: e.target.value})} placeholder="Repetí la contraseña" />
                     <Button
                       type="button"
                       variant="outline-secondary"

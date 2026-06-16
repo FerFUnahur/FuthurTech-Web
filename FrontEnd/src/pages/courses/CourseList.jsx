@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Row, Col, Card, Button, Form, Spinner, Badge } from 'react-bootstrap'
 import api from '../../services/api'
+import { useToast } from '../../context/ToastContext'
 
 function CourseList() {
   const [courses, setCourses] = useState([])
@@ -9,9 +10,12 @@ function CourseList() {
   const [search, setSearch] = useState('')
   const [categoryId, setCategoryId] = useState('')
   const [loading, setLoading] = useState(true)
+  const { error: toastError } = useToast()
 
   useEffect(() => {
-    api.get('/courses/categories').then(res => setCategories(res.data)).catch(() => {})
+    api.get('/courses/categories').then(res => setCategories(res.data)).catch(() => {
+      toastError('Error al cargar las categorías')
+    })
   }, [])
 
   useEffect(() => {
@@ -21,7 +25,9 @@ function CourseList() {
     if (categoryId) params.categoryId = categoryId
     api.get('/courses', { params }).then(res => {
       setCourses(res.data)
-    }).catch(() => {}).finally(() => setLoading(false))
+    }).catch(() => {
+      toastError('Error al cargar los cursos')
+    }).finally(() => setLoading(false))
   }, [search, categoryId])
 
   return (

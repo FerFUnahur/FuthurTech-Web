@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
-import { Table, Button, Badge, Modal, Form } from 'react-bootstrap'
+import { Table, Button, Badge, Modal, Form, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useToast } from '../../context/ToastContext'
 import api from '../../services/api'
 
 function InstructorCourses() {
   const { user } = useAuth()
   const navigate = useNavigate()
+  const { success, error: toastError } = useToast()
   const [courses, setCourses] = useState([])
+  const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [editingCourse, setEditingCourse] = useState(null)
   const [saving, setSaving] = useState(false)
@@ -23,8 +26,10 @@ function InstructorCourses() {
       try {
         const res = await api.get('/courses', { params: { instructorId: user.id } })
         setCourses(res.data)
-      } catch (error) {
-        console.error('Error:', error)
+      } catch {
+        toastError('Error al cargar los cursos')
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -56,8 +61,9 @@ function InstructorCourses() {
       setShowModal(false)
       setEditingCourse(null)
       setFormData({ title: '', description: '', accessCode: '', status: 'publicado' })
-    } catch (error) {
-      console.error('Error al guardar:', error)
+      success(editingCourse ? 'Curso actualizado' : 'Curso creado')
+    } catch {
+      toastError('Error al guardar el curso')
     } finally {
       setSaving(false)
     }
@@ -73,13 +79,13 @@ function InstructorCourses() {
   }
 
   const handleDelete = async (id) => {
-    if (window.confirm('¿Estás seguro?')) {
-      try {
-        await api.delete(`/courses/${id}`)
-        setCourses(courses.filter(c => c.id !== id))
-      } catch (error) {
-        console.error('Error:', error)
-      }
+    if (!window.confirm('¿Estás seguro?')) return
+    try {
+      await api.delete(`/courses/${id}`)
+      setCourses(courses.filter(c => c.id !== id))
+      success('Curso eliminado')
+    } catch {
+      toastError('Error al eliminar el curso')
     }
   }
 
@@ -99,14 +105,16 @@ function InstructorCourses() {
             </Button>
           </div>
 
-          {courses.length === 0 ? (
+          {loading ? (
+            <div className="text-center py-5"><Spinner animation="border" variant="primary" /></div>
+          ) : courses.length === 0 ? (
             <div className="alert alert-info">
               <i className="bi bi-info-circle me-2"></i>
               No tienes cursos aún. <button onClick={() => setShowModal(true)} className="btn btn-link p-0">Crea uno ahora</button>.
             </div>
           ) : (
             <Table responsive striped hover className="shadow-sm">
-              <thead className="table-light">
+              <thead className="table-dark">
                 <tr>
                   <th>Título</th>
                   <th>Estudiantes</th>

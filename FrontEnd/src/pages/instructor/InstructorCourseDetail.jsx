@@ -123,7 +123,7 @@ function InstructorCourseDetail() {
           <Button className="btn-verde" onClick={() => setShowModuleModal(true)}>Crear primer módulo</Button>
         </div>
       ) : (
-        course.Modules.sort((a, b) => a.order - b.order).map(mod => (
+        course.Modules.slice().sort((a, b) => a.order - b.order).map(mod => (
           <Card key={mod.id} className="mb-3 border-0 shadow-sm">
             <Card.Body>
               <div className="d-flex justify-content-between align-items-start">
@@ -142,7 +142,7 @@ function InstructorCourseDetail() {
               </div>
               {mod.Lessons && mod.Lessons.length > 0 ? (
                 <ListGroup variant="flush" className="small">
-                  {mod.Lessons.sort((a, b) => a.order - b.order).map(lesson => (
+                  {mod.Lessons.slice().sort((a, b) => a.order - b.order).map(lesson => (
                     <ListGroup.Item key={lesson.id} className="d-flex justify-content-between align-items-center">
                       <div>
                         <i className="bi bi-play-circle me-2 text-muted"></i>

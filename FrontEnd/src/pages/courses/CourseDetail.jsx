@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Container, Row, Col, Button, Spinner, Alert, Accordion, Badge, ListGroup, Toast, ToastContainer, Form } from 'react-bootstrap'
+import { Container, Row, Col, Button, Spinner, Alert, Accordion, Badge, ListGroup, Form } from 'react-bootstrap'
 import api from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
+import { useToast } from '../../context/ToastContext'
 
 function CourseDetail() {
   const { id } = useParams()
   const { user } = useAuth()
+  const { success, error: toastError } = useToast()
   const [course, setCourse] = useState(null)
   const [enrolled, setEnrolled] = useState(false)
   const [enrolling, setEnrolling] = useState(false)
   const [loading, setLoading] = useState(true)
   const [accessCode, setAccessCode] = useState('')
   const [accessError, setAccessError] = useState('')
-  const [showToast, setShowToast] = useState(false)
 
   useEffect(() => {
-    api.get(`/courses/${id}`).then(res => setCourse(res.data)).catch(() => {}).finally(() => setLoading(false))
+    api.get(`/courses/${id}`).then(res => setCourse(res.data)).catch(() => {
+      toastError('Error al cargar el curso')
+    }).finally(() => setLoading(false))
     if (user) {
       api.get('/enrollments').then(res => {
         const e = res.data.find(en => en.courseId === Number(id))
@@ -31,7 +34,7 @@ function CourseDetail() {
     try {
       const res = await api.post(`/courses/${id}/enroll`, { accessCode })
       setEnrolled(res.data)
-      setShowToast(true)
+      success('¡Inscripción exitosa! Ya podés acceder al curso.')
     } catch (err) {
       setAccessError(err.response?.data?.error || 'Error al inscribirse')
     } finally {
@@ -140,14 +143,6 @@ function CourseDetail() {
           </div>
         </Col>
       </Row>
-
-      <ToastContainer position="top-center" className="p-3" style={{ zIndex: 9999 }}>
-        <Toast onClose={() => setShowToast(false)} show={showToast} delay={3000} autohide bg="success">
-          <Toast.Body className="text-white fw-semibold">
-            <i className="bi bi-check-circle me-2"></i>¡Inscripción exitosa! Ya podés acceder al curso.
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
     </Container>
   )
 }
