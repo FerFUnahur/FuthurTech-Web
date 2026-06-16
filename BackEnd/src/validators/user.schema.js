@@ -1,15 +1,15 @@
 const Joi = require('joi');
 
 const minAgeDate = new Date();
-minAgeDate.setFullYear(minAgeDate.getFullYear() - 10); // Hoy hace 10 años (Edad mínima)
+minAgeDate.setFullYear(minAgeDate.getFullYear() - 10); 
 
 const maxAgeDate = new Date();
-maxAgeDate.setFullYear(maxAgeDate.getFullYear() - 100); // Hoy hace 100 años (Edad máxima)
+maxAgeDate.setFullYear(maxAgeDate.getFullYear() - 100); 
 
 const birthDateValidation = Joi.date()
   .iso()
-  .max(minAgeDate) // Reemplaza 'now-10y' por el objeto Date real
-  .min(maxAgeDate) // Reemplaza 'now-100y' por el objeto Date real
+  .max(minAgeDate) 
+  .min(maxAgeDate) 
   .allow(null)
   .optional()
   .messages({

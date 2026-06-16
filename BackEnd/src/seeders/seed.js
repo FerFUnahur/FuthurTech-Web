@@ -10,9 +10,9 @@ const seed = async () => {
 
   const hash = await bcrypt.hash('123456', 10);
 
-  const admin = await User.create({ name: 'Admin FuthurTech', email: 'admin@futhurtech.com', password: hash, role: 'admin', bio: 'Administrador de la plataforma' });
-  const instructor = await User.create({ name: 'Carlos Gómez', email: 'instructor@futhurtech.com', password: hash, role: 'instructor', bio: 'Ingeniero en robótica con 10 años de experiencia' });
-  const student = await User.create({ name: 'María López', email: 'student@futhurtech.com', password: hash, role: 'student', bio: 'Estudiante apasionada por la tecnología' });
+  const admin = await User.create({ name: 'Admin FuthurTech', email: 'admin@futhurtech.com', password: hash, role: 'admin', bio: 'Administrador de la plataforma',birthDate: '1995-05-15' });
+  const instructor = await User.create({ name: 'Carlos Gómez', email: 'instructor@futhurtech.com', password: hash, role: 'instructor', bio: 'Ingeniero en robótica con 10 años de experiencia',birthDate: '1999-05-15' });
+  const student = await User.create({ name: 'María López', email: 'student@futhurtech.com', password: hash, role: 'student', bio: 'Estudiante apasionada por la tecnología',birthDate: '2011-05-15' });
 
   const catKits = await Category.create({ name: 'Kits de Robótica', description: 'Kits para aprender robótica desde cero', image: '' });
   const catAcc = await Category.create({ name: 'Accesorios', description: 'Accesorios y componentes electrónicos', image: '' });
